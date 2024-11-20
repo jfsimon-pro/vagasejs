@@ -12,6 +12,7 @@ RUN npm install
 
 # Copie o restante do código da aplicação para o contêiner
 COPY . .
+RUN npx prisma generate
 
 # Exponha a porta que o Node.js vai escutar
 EXPOSE 3000
