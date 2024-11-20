@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciar Vagas</title>
+</head>
+<body>
+  <h1>Gerenciar Vagas</h1>
+  <ul>
+    <% vagas.forEach(vaga => { %>
+      <li>
+        <strong>Título:</strong> <%= vaga.titulo %><br>
+        <strong>Descrição:</strong> <%= vaga.descricao %><br>
+        <strong>Salário:</strong> R$ <%= vaga.salario.toFixed(2) %><br>
+        <strong>Tags:</strong> <%= vaga.tags.join(', ') %><br>
+        <strong>Empresa:</strong> <%= vaga.empresa.nomeFantasia %><br>
+        <form action="/admin/vagas/<%= vaga.id %>/delete" method="POST" style="display: inline;">
+          <button type="submit">Excluir</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+
+  <a href="/admin/dashboard">Voltar ao Dashboard</a>
+</body>
+</html>

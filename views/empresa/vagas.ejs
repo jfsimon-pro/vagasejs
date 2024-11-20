@@ -1,0 +1,40 @@
+<!-- views/empresa/vagas.ejs -->
+<%- include('../partials/header') %>
+  <div class="pai-vagas">
+      <div class="main-vagas">
+        <div class="vagas-cabecalho">
+          <h1>Vagas Criadas</h1>
+          <div class="btn-vagas-criadas">
+            <a href="/empresa/vagas/criar">Criar Nova Vaga</a>
+            <a href="/empresa/dashboard">Voltar para o Dashboard</a>
+          </div>
+        </div>
+    
+      <ul>
+        <% if (vagas.length === 0) { %>
+          <p>Nenhuma vaga criada.</p>
+        <% } else { %>
+          <% vagas.forEach(vaga => { %>
+            <li>
+              <h3><%= vaga.titulo %></h3>
+              <p class="descricao-vaga"><strong>Descrição:</strong></p>
+              <p class="vaga-descrita"><%= vaga.descricao %></p>
+              <p><strong>Salário:</strong> R$ <%= vaga.salario.toFixed(2) %></p>
+              <p><strong>Tags:</strong> <%= vaga.tags.join(', ') %></p>
+    
+              <div class="botoes-gerenciar-vagas">
+                
+                <a href="/empresa/vagas/<%= vaga.id %>/candidatos">Ver Candidatos</a>
+                <form action="/empresa/vagas/excluir/<%= vaga.id %>" method="POST">
+                  <button type="submit">Excluir</button>
+                </form>
+              </div>
+            </li>
+          <% }) %>
+        <% } %>
+      </ul>
+    
+      
+      </div>
+  </div>
+  <%- include('../partials/footer') %>

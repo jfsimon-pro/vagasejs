@@ -1,0 +1,15 @@
+<%- include('../partials/header') %>
+  <div class="main-login">
+    <div class="content-main-login">
+      <h1>Criar Nova Vaga</h1>
+      <form action="/empresa/vagas/criar" method="POST">
+        <input type="text" name="titulo" placeholder="Título da Vaga" required>
+        <textarea name="descricao" placeholder="Descrição da Vaga" required></textarea>
+        <input type="number" step="0.01" name="salario" placeholder="Salário" required>
+        <input type="text" name="tags" placeholder="Tags (separadas por vírgula)" required>
+        <button type="submit">Criar Vaga</button>
+      </form>
+    </div>
+  </div>
+  <a href="/empresa/vagas">Voltar para Minhas Vagas</a>
+  <%- include('../partials/footer') %>

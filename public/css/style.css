@@ -1,0 +1,622 @@
+/* Navbar */
+.navbar {
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+  }
+  
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .nav-links ul {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-links ul li a {
+    font-size: 1rem;
+    transition: color 0.3s;
+    color: #062A4E;
+    text-decoration: none;
+  }
+  
+  .nav-links ul li a:hover {
+    color: #F78E0F;
+  }
+  
+  /* Mobile styles */
+  .menu-toggle {
+    display: none; /* Esconde o botão de menu no desktop */
+    font-size: 1.8rem;
+  }
+  
+  .nav-links {
+    display: flex;
+  }
+  .img-logo {
+    max-width: 200px;
+  }
+  #footer {
+    background: #062A4E;
+    padding: 50px;
+  }
+  #footer p {
+    color: #F78E0F;
+    text-align: center;
+  }
+  .hero {
+    background: url("../img/bg2.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 685px;
+  }
+  .content-hero {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    height: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .content-hero h1 {
+    color: white;
+    font-size: 40px;
+  }
+  .content-hero h2 {
+    color: white;
+    font-size: 35px;
+  }
+  .content-hero h3 {
+    color: white;
+    font-size: 24px;
+  }
+  .content-hero b {
+    font-weight: bold;
+    color: #F78E0F;
+  }
+  .textos-hero {
+    margin: auto;
+    max-width: 780px;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+  }
+  .botoes-hero a {
+    background: white;
+    text-decoration: none;
+    padding: 20px;
+    border-radius: 80px;
+  }
+  .botoes-hero a:hover {
+    filter: brightness(70%);
+  }
+  .botoes-hero a:nth-child(1) {
+    color: black;
+  }
+  .botoes-hero a:nth-child(2) {
+    background: #F78E0F;
+    color: white;
+  }
+  .botoes-hero {
+    display: flex;
+    gap: 20px;
+  }
+.content-parceiros {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 20px;
+  padding: 20px;
+  overflow: scroll;
+}
+.content-sobre {
+  max-width: 1200px;
+  margin: auto;
+  padding: 80px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+
+}
+.sobre-2 h2 {
+  font-size: 48px;
+  color: #062A4E;
+  margin-bottom: 20px;
+}
+.sobre-2 p {
+  font-size: 20px;
+  color: #062A4E;
+  line-height: 28px;
+}
+.main-login {
+  padding: 35px 0px;
+  min-height: 74vh;
+  background: url("../img/bg2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.content-main-login {
+  /* From https://css.glass */
+background: rgba(255, 255, 255, 0.2);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border: 1px solid rgba(255, 255, 255, 0.3);
+
+max-width: 500px;
+padding: 40px;
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+justify-content: center;
+
+
+}
+.content-main-login h1 {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+.content-main-login form {
+  display: flex;
+    flex-direction: column;
+    width: 350px;
+    gap:14px;
+}
+.content-main-login input {
+  padding: 10px 10px;
+}
+.content-main-login button {
+  border: none;
+  background: #F78E0F;
+  color: white;
+  font-size: 20px;
+  padding: 10px;
+  cursor: pointer;
+}
+.content-main-login button:hover {
+  filter: brightness(80%);
+}
+.main-dashboard {
+  max-width: 1200px;
+  margin: auto;
+  padding: 80px 20px;
+}
+.main-dashboard h1 {
+  font-size: 30px;
+  margin-bottom: 25px;
+}
+.seus-dados h2 {
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+.seus-dados strong {
+  font-weight: bold;
+}
+.seus-dados p {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+.seus-dados {
+  margin-bottom: 80px;
+}
+.seus-dados h2 {
+  text-transform: uppercase;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+.conteudo-form {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.seus-dados input {
+  padding: 8px 14px;
+  font-size: 16px;
+}
+.seus-dados button {
+  border: none;
+  background: #F78E0F;
+  color: white;
+  font-size: 20px;
+  padding: 10px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+.opcoes a {
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 12px;
+  background: #F78E0F;
+  color: white;
+}
+.opcoes a:hover {
+  filter: brightness(90%);
+}
+.opcoes {
+  margin-bottom: 35px;
+}
+.pai-vagas {
+  padding: 35px 0px;
+  min-height: 74vh;
+  background: url("../img/bg2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.main-vagas {
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
+  padding: 80px 20px;
+}
+.main-vagas li {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.botoes-gerenciar-vagas {
+  display: flex;
+  gap: 20px;
+}
+.main-vagas li {
+  max-width: 450px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.main-vagas li h3 {
+  font-size: 22px;
+  color: white;
+  margin-bottom: 20px;
+}
+.descricao-vaga {
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 7px;
+}
+.main-vagas p {
+  color: white;
+  margin-bottom: 10px;
+}
+.main-vagas strong {
+  font-weight: bold;
+}
+.vaga-descrita {
+  margin-bottom: 25px !important;
+}
+.botoes-gerenciar-vagas button {
+  border: none;
+    background: #F78E0F;
+    color: white;
+    font-size: 16px;
+    padding: 5px 20px;
+    cursor: pointer;
+}
+.botoes-gerenciar-vagas button:hover {
+  filter: brightness(90%);
+}
+.botoes-gerenciar-vagas form:nth-child(2) > button {
+  background: red;
+}
+.main-vagas h1 {
+  color: white;
+  font-size: 40px;
+  margin-bottom: 35px;
+}
+.vagas-cabecalho a {
+  border: none;
+  background: #F78E0F;
+  color: white;
+  font-size: 16px;
+  padding: 5px 20px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.vagas-cabecalho a:hover {
+  filter: brightness(90%);
+}
+.btn-vagas-criadas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.btn-vagas-criadas a:nth-child(2) {
+  border: none;
+  background: white;
+  color: black;
+  font-size: 16px;
+  padding: 5px 20px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.vagas-cabecalho {
+  margin-bottom: 50px;
+}
+.candidato-superior {
+  padding: 35px 20px;
+  min-height: 74vh;
+  background: url("../img/bg2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.main-dashboard-candidato {
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
+}
+.main-dashboard-candidato h1 {
+  color: white;
+  font-size: 35px;
+  margin-bottom: 25px;
+}
+.cabecalho-candidato a {
+  border: none;
+  background: #F78E0F;
+  color: white;
+  font-size: 14px;
+  padding: 7px 25px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.cabecalho-candidato {
+  margin-bottom: 35px;
+}
+.meus-dados p {
+  color: white;
+  font-size: 17px;
+  margin-bottom: 15px;
+}
+.meus-dados strong {
+  font-weight: bold;
+}
+.meus-dados a {
+  color: white;
+  text-decoration: underline;
+}
+.meus-dados {
+  margin-bottom: 50px;
+}
+.disponiveis h2 {
+  color: white;
+  font-size: 25px;
+  margin-bottom: 25px;
+}
+.disponiveis li {
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    max-width: 500px;
+    padding: 20px;
+}
+.disponiveis h3 {
+  color: white;
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+.disponiveis p {
+  color: white;
+  font-size: 16px;
+  font-weight: 300;
+  margin-bottom: 30px;
+}
+.disponiveis button {
+  border: none;
+  background: #F78E0F;
+  color: white;
+  font-size: 14px;
+  padding: 7px 25px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.inscrito {
+  color: white;
+    font-size: 25px;
+    margin-bottom: 25px;
+}
+.inscrito h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+.inscrito p {
+  font-size: 16px;
+    font-weight: 300;
+    margin-bottom: 12px;
+}
+.inscrito strong {
+  font-size: 18px;
+  font-weight: bold;
+}
+.inscrito h2 {
+  margin-bottom: 35px;
+}
+.inscrito {
+  background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 20px;
+}
+.inscrito li {
+  margin-bottom: 50px;
+}
+.s-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.campos {
+  display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.disponiveis {
+  margin-bottom: 50px;
+}
+.content-candidatos-vaga {
+    max-width: 1200px;
+    margin: auto;
+    padding: 80px 20px;
+}
+.content-candidatos-vaga h1 {
+  margin-bottom: 35px;
+  font-size: 30px;
+}
+.content-candidatos-vaga li {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    max-width: 450px;
+    padding: 20px;
+    font-size: 17px;
+    margin-bottom: 45px;
+}
+.cabecalho-candidato-vagas a{
+  border: none;
+    background: #F78E0F;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+    cursor: pointer;
+    margin-bottom: 50px;
+    text-decoration: none;
+}
+.botoes-gerenciar-vagas a {
+  border: none;
+  background: #F78E0F;
+  color: white;
+  font-size: 16px;
+  padding: 5px 20px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.cabecalho-candidato-vagas {
+  margin-bottom: 50px;
+}
+.content-candidatos-vaga strong {
+  font-weight: bold;
+}
+@media (max-width: 768px) {
+  .img-logo {
+    max-width: 120px;
+  }
+  .nav-links {
+    display: none; /* Esconde o menu no mobile */
+    position: absolute;
+    top: 60px;
+    left: 0; /* Alinha o menu ao lado esquerdo */
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-direction: column; /* Alinha os links verticalmente */
+    gap: 10px;
+    padding: 10px 0;
+    width: 100%; /* Faz o menu ocupar toda a largura da tela */
+    border-radius: 0; /* Remove bordas arredondadas para ocupar toda a tela */
+    z-index: 10; /* Garante que o menu fique acima de outros elementos */
+  }
+
+  .nav-links.active {
+    display: flex; /* Exibe o menu ao clicar no botão */
+  }
+
+  .nav-links ul {
+    flex-direction: column; /* Alinha os links verticalmente */
+    gap: 10px; /* Espaçamento entre os links */
+    padding: 0;
+    margin: 0;
+    width: 100%; /* Cada link ocupa toda a largura */
+  }
+
+  .nav-links ul li {
+    width: 100%; /* Cada item ocupa toda a largura */
+    text-align: center; /* Centraliza o texto */
+  }
+
+  .nav-links ul li a {
+    display: block; /* Faz o link ocupar toda a área do item */
+    padding: 10px 0; /* Aumenta a área clicável */
+    background-color: white; /* Cor de fundo dos links */
+    color: black; /* Cor do texto */
+    transition: background-color 0.3s;
+  }
+
+  .nav-links ul li a:hover {
+    background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+  }
+
+  .menu-toggle {
+    display: block; /* Exibe o botão de menu no mobile */
+  }
+  .content-hero h2 {
+    font-size: 30px;
+  }
+  .botoes-hero {
+    flex-wrap: wrap;
+    justify-content: center;  
+  }
+  .content-sobre {
+    flex-wrap: wrap-reverse;
+  }
+  .sobre-1 img {
+    max-width: 100%;
+  }
+  .content-main-login form {
+    width: 100%;
+  }
+  .content-main-login {
+    width: 65%;
+  }
+  .content-main-login input {
+    font-size: 17px;
+  }
+  .content-main-login button {
+    font-size: 17px;
+  }
+  .campos {
+    width: 100%;
+  }
+}

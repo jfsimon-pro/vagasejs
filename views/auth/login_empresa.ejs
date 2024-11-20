@@ -1,0 +1,21 @@
+<%- include('../partials/header') %>
+<div class="main-login">
+  <div class="content-main-login">
+    <h1>Área da Empresa</h1>
+    <form action="/auth/login_empresa" method="POST">
+      <input type="email" name="email" placeholder="E-mail" required>
+      <input type="password" name="senha" placeholder="Senha" required>
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+
+</div>
+
+  <% if (errors.length > 0) { %>
+    <ul>
+      <% errors.forEach(error => { %>
+        <li><%= error.msg %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+  <%- include('../partials/footer') %>

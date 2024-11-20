@@ -1,0 +1,12 @@
+<h1>Candidatos</h1>
+<ul>
+  <% candidatos.forEach(candidato => { %>
+    <li>
+      <%= candidato.nomeCompleto %> - <%= candidato.email %>
+      <form action="/admin/candidatos/<%= candidato.id %>/delete" method="POST">
+        <button type="submit">Excluir</button>
+      </form>
+    </li>
+  <% }) %>
+</ul>
+<a href="/admin/dashboard">Voltar ao Dashboard</a>

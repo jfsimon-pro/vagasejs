@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciar Empresas</title>
+</head>
+<body>
+  <h1>Gerenciar Empresas</h1>
+  <ul>
+    <% empresas.forEach(empresa => { %>
+      <li>
+        <strong>Razão Social:</strong> <%= empresa.razaoSocial %><br>
+        <strong>Nome Fantasia:</strong> <%= empresa.nomeFantasia %><br>
+        <strong>CNPJ:</strong> <%= empresa.cnpj %><br>
+        <strong>Email:</strong> <%= empresa.email %><br>
+        <form action="/admin/empresas/<%= empresa.id %>/delete" method="POST" style="display: inline;">
+          <button type="submit">Excluir</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+
+  <a href="/admin/dashboard">Voltar ao Dashboard</a>
+</body>
+</html>

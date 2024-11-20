@@ -1,0 +1,104 @@
+<%- include('../partials/header') %>
+  <div class="main-dashboard">
+    <h1>Bem-vindo, <%= empresa.nomeFantasia %>!</h1>
+    <div class="opcoes">
+      <a href="/auth/logout">Logout</a>
+      <a href="/empresa/vagas">Ver Minhas Vagas</a>
+      <a href="/empresa/vagas/criar">Criar Vaga</a>
+    </div>
+    <div class="seus-dados">
+      <h2>Dados Oficiais de Registro da sua empresa</h2>
+      <form action="/empresa/editar" method="POST">
+        <div class="conteudo-form">
+
+        <div class="campos">
+
+          <div class="s-campo">
+            <strong>Razão Social:</strong>
+            <input type="text" name="razaoSocial" value="<%= empresa.razaoSocial %>" required>
+          </div>    
+          <div class="s-campo">
+            <strong>Nome Fantasia:</strong>
+            <input type="text" name="nomeFantasia" value="<%= empresa.nomeFantasia %>" required>
+          </div>    
+          <div class="s-campo">
+            <strong>CNPJ:</strong>
+            <input type="text" name="cnpj" value="<%= empresa.cnpj %>" required>
+          </div>
+
+        </div>   
+
+        <div class="campos">
+
+          <div class="s-campo">
+            <strong>Inscrição Estadual:</strong>
+            <input type="text" name="ie" value="<%= empresa.ie %>">
+          </div>    
+          <div class="s-campo">
+            <strong>CEP:</strong>
+            <input type="text" name="cep" value="<%= empresa.cep %>" required>
+          </div>    
+          <div class="s-campo">
+            <strong>Endereço:</strong>
+            <input type="text" name="endereco" value="<%= empresa.endereco %>" required>  
+          </div> 
+
+        </div>
+        <div class="campos">
+
+          <div class="s-campo">
+            <strong>Número:</strong>
+            <input type="text" name="numero" value="<%= empresa.numero %>" required>
+          </div>    
+          <div class="s-campo">
+            <strong>Bairro:</strong>
+            <input type="text" name="bairro" value="<%= empresa.bairro %>" required>
+          </div>    
+          <div class="s-campo">
+            <strong>Cidade:</strong>
+            <input type="text" name="cidade" value="<%= empresa.cidade %>" required>
+          </div> 
+           
+        </div>
+        <div class="campos">
+
+          <div class="s-campo">
+            <strong>Estado:</strong>
+            <input type="text" name="estado" value="<%= empresa.estado %>" required>
+          </div>    
+          <div class="s-campo">
+            <strong>Telefone:</strong>
+            <input type="text" name="telefone" value="<%= empresa.telefone %>" required>
+          </div>    
+          <div class="s-campo">
+            <strong>Whatsapp:</strong>
+            <input type="text" name="whatsapp" value="<%= empresa.whatsapp %>" required>
+          </div>
+  
+        </div>
+
+        <div class="campos">
+
+          <div class="s-campo">
+            <strong>Responsável:</strong>
+            <input type="text" name="responsavel" value="<%= empresa.responsavel %>" required>
+          </div>    
+          <div class="s-campo">
+            <strong>E-mail:</strong>
+            <input type="email" name="email" value="<%= empresa.email %>" required>
+          </div>
+
+        </div>
+        
+        </div>
+        <button type="submit">Salvar Alterações</button>
+      </form>
+     
+
+    </div>
+
+   
+
+
+  </div>
+  <%- include('../partials/footer') %>

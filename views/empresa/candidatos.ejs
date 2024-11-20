@@ -1,0 +1,26 @@
+<%- include('../partials/header') %>
+<div class="main-candidatos-vaga">
+    <div class="content-candidatos-vaga">
+        <div class="cabecalho-candidato-vagas">
+            <h1>Candidatos para a vaga: <%= vaga.titulo %></h1>
+            <a href="/empresa/vagas">Voltar para minhas vagas</a>
+        </div>
+        <% if (vaga.candidaturas.length === 0) { %>
+          <p>Não há candidatos inscritos nesta vaga.</p>
+        <% } else { %>
+          <ul>
+            <% vaga.candidaturas.forEach(candidatura => { %>
+              <li>
+                <p><strong>Nome:</strong> <%= candidatura.candidato.nomeCompleto %></p><br>
+                <p><strong>Telefone:</strong> <%= candidatura.candidato.telefone %></p><br>
+                <p><strong>E-mail:</strong> <%= candidatura.candidato.email %></p><br>
+                <p><strong>Currículo:</strong>
+                    <a href="/uploads/<%= candidatura.candidato.curriculo.split('/').pop() %>" target="_blank">Ver Currículo</a></p>
+              </li>
+            <% }) %>
+          </ul>
+        <% } %>
+        
+    </div>
+</div>
+<%- include('../partials/footer') %>

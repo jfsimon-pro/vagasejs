@@ -1,0 +1,77 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Empresa {
+  id             String   @id @default(uuid())
+  razaoSocial    String
+  nomeFantasia   String
+  cnpj           String   @unique
+  ie             String?
+  cep            String
+  endereco       String
+  numero         String
+  bairro         String
+  cidade         String
+  estado         String
+  telefone       String
+  whatsapp       String
+  responsavel    String
+  email          String   @unique
+  senha          String
+  vagas          Vaga[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Candidato {
+  id             String   @id @default(uuid())
+  nomeCompleto   String
+  cpf            String   @unique
+  telefone       String
+  email          String   @unique
+  senha          String
+  cep            String
+  endereco       String
+  numero         String
+  bairro         String
+  cidade         String
+  estado         String
+  curriculo      String
+  candidaturas   Candidatura[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Vaga {
+  id             String         @id @default(uuid())
+  titulo         String
+  descricao      String
+  salario        Float
+  tags           String[]
+  empresaId      String
+  empresa        Empresa        @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  candidaturas   Candidatura[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model Candidatura {
+  id             String     @id @default(uuid())
+  candidatoId    String
+  vagaId         String
+  candidato      Candidato  @relation(fields: [candidatoId], references: [id])
+  vaga           Vaga       @relation(fields: [vagaId], references: [id], onDelete: Cascade) // Cascata configurada aqui
+  createdAt      DateTime   @default(now())
+}
+
+model Admin {
+  id             String   @id @default(uuid())
+  email          String   @unique
+  senha          String
+}

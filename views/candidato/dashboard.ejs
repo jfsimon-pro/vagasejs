@@ -1,0 +1,58 @@
+<%- include('../partials/header') %>
+<section class="candidato-superior">
+  <div class="main-dashboard-candidato">
+    <div class="cabecalho-candidato">
+      <h1>Bem-vindo, <%= candidato.nomeCompleto %>!</h1>
+      <a href="/auth/logout">Logout</a>
+    </div>
+    <div class="meus-dados">
+      <p><strong>CPF:</strong> <%= candidato.cpf %></p>
+      <p><strong>E-mail:</strong> <%= candidato.email %></p>
+      <p><strong>Telefone:</strong> <%= candidato.telefone %></p>
+      <p><strong>Endereço:</strong> <%= candidato.endereco %>, <%= candidato.numero %>, <%= candidato.bairro %>, <%= candidato.cidade %> - <%= candidato.estado %></p>
+      <p><strong>Currículo:</strong> <a href="/uploads/<%= candidato.curriculo.split('/').pop() %>" target="_blank">Visualizar Currículo</a></p>
+    </div>
+  
+    <div class="vagas-candidato">
+     <div class="disponiveis">
+        <h2>Vagas Disponíveis</h2>
+        <ul>
+          <% if (vagasDisponiveis.length > 0) { %>
+            <% vagasDisponiveis.forEach(vaga => { %>
+              <li>
+                <h3><%= vaga.titulo %></h3><br>
+                <p><%= vaga.descricao %></p>
+                <p>R$ <%= vaga.salario.toFixed(2) %></p>
+                <form action="/candidato/candidatar" method="POST">
+                  <input type="hidden" name="vagaId" value="<%= vaga.id %>">
+                  <button type="submit">Candidatar-se</button>
+                </form>
+              </li>
+            <% }) %>
+          <% } else { %>
+            <p>Nenhuma vaga disponível.</p>
+          <% } %>
+        </ul>
+     </div>
+  
+      <div class="inscrito">
+        <h2>Vagas em que você já se candidatou</h2>
+        <ul>
+          <% if (vagasCandidatadas.length > 0) { %>
+            <% vagasCandidatadas.forEach(vaga => { %>
+              <li><h3><%= vaga.titulo %></h3>
+                <p><%= vaga.descricao %></p>
+                <strong>R$ <%= vaga.salario.toFixed(2) %></strong></li>
+            <% }) %>
+          <% } else { %>
+            <p>Você ainda não se candidatou a nenhuma vaga.</p>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  
+    
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

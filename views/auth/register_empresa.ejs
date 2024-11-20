@@ -1,0 +1,33 @@
+<%- include('../partials/header') %>
+  <div class="main-login">
+    <div class="content-main-login">
+      <h1>Cadastro de Empresa</h1>
+      <form action="/auth/register_empresa" method="POST">
+        <input type="text" name="razaoSocial" placeholder="Razão Social" required>
+        <input type="text" name="nomeFantasia" placeholder="Nome Fantasia" required>
+        <input type="text" name="cnpj" placeholder="CNPJ" required>
+        <input type="text" name="ie" placeholder="Inscrição Estadual (Opcional)">
+        <input type="text" name="cep" placeholder="CEP" required>
+        <input type="text" name="endereco" placeholder="Endereço" required>
+        <input type="text" name="numero" placeholder="Número" required>
+        <input type="text" name="bairro" placeholder="Bairro" required>
+        <input type="text" name="cidade" placeholder="Cidade" required>
+        <input type="text" name="estado" placeholder="Estado" required>
+        <input type="text" name="telefone" placeholder="Telefone" required>
+        <input type="text" name="whatsapp" placeholder="WhatsApp" required>
+        <input type="text" name="responsavel" placeholder="Nome do Responsável" required>
+        <input type="email" name="email" placeholder="E-mail" required>
+        <input type="password" name="senha" placeholder="Senha" required>
+        <button type="submit">Cadastrar</button>
+      </form>
+    </div>
+  </div>
+
+  <% if (errors && errors.length > 0) { %>
+    <ul>
+      <% errors.forEach(error => { %>
+        <li><%= error.msg %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+  <%- include('../partials/footer') %>
