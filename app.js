@@ -10,7 +10,19 @@ const empresaRoutes = require('./routes/empresa');
 const candidatoRoutes = require('./routes/candidato');
 const adminRoutes = require('./routes/admin');
 // Configurações
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        "default-src": ["'self'"],
+        "script-src": ["'self'"],
+        "connect-src": ["'self'", "https://viacep.com.br", "https://api-publica.speedio.com.br"], // Permite conexões à API do ViaCEP
+        "style-src": ["'self'", "'unsafe-inline'"],
+        "img-src": ["'self'"],
+      },
+    },
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

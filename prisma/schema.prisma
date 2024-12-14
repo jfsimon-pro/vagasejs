@@ -14,11 +14,12 @@ model Empresa {
   cnpj           String   @unique
   ie             String?
   cep            String
-  endereco       String
+  logradouro     String
+  complemento    String? 
   numero         String
   bairro         String
   cidade         String
-  estado         String
+  uf             String
   telefone       String
   whatsapp       String
   responsavel    String
@@ -37,11 +38,12 @@ model Candidato {
   email          String   @unique
   senha          String
   cep            String
-  endereco       String
+  logradouro     String
+  complemento    String
   numero         String
   bairro         String
   cidade         String
-  estado         String
+  uf             String
   curriculo      String
   candidaturas   Candidatura[]
   createdAt      DateTime @default(now())
