@@ -6,47 +6,83 @@
       <a href="/auth/logout">Logout</a>
     </div>
     <div class="meus-dados">
+      <div class="editar-dados">
+        <a href="/candidato/editar-dados">Editar Meus Dados</a>
+      </div>
+      
       <p><strong>CPF:</strong> <%= candidato.cpf %></p>
       <p><strong>E-mail:</strong> <%= candidato.email %></p>
       <p><strong>Telefone:</strong> <%= candidato.telefone %></p>
-      <p><strong>Endereço:</strong> <%= candidato.endereco %>, <%= candidato.numero %>, <%= candidato.bairro %>, <%= candidato.cidade %> - <%= candidato.estado %></p>
+      <p><strong>Endereço:</strong> <%= candidato.logradouro %>, <%= candidato.complemento %>, <%= candidato.numero %>, <%= candidato.bairro %> - <%= candidato.cep %>, <%= candidato.cidade %> / <%= candidato.uf %></p>
       <p><strong>Currículo:</strong> <a href="/uploads/<%= candidato.curriculo.split('/').pop() %>" target="_blank">Visualizar Currículo</a></p>
+      <div class="lancar-cursos">
+        <a href="/candidato/lancar-experiencia">Lançar Experiencia</a>
+        <a href="/candidato/lancar-curso">Lançar Curso</a>
+      </div>      
     </div>
   
     <div class="vagas-candidato">
      <div class="disponiveis">
-        <h2>Vagas Disponíveis</h2>
-        <ul>
-          <% if (vagasDisponiveis.length > 0) { %>
-            <% vagasDisponiveis.forEach(vaga => { %>
-              <li>
-                <h3><%= vaga.titulo %></h3><br>
-                <p><%= vaga.descricao %></p>
-                <p>R$ <%= vaga.salario.toFixed(2) %></p>
-                <form action="/candidato/candidatar" method="POST">
-                  <input type="hidden" name="vagaId" value="<%= vaga.id %>">
-                  <button type="submit">Candidatar-se</button>
-                </form>
-              </li>
-            <% }) %>
-          <% } else { %>
-            <p>Nenhuma vaga disponível.</p>
-          <% } %>
-        </ul>
-     </div>
+      <h2>Vagas Disponíveis</h2>
+<form action="/candidato/dashboard" method="GET" style="margin-bottom: 20px;">
+  <input type="text" name="busca" placeholder="Buscar vagas..." value="<%= busca || '' %>">
+  <button type="submit">Buscar</button>
+</form>
+
+<% if (vagasDisponiveis.length > 0) { %>
+  <ul>
+    <% vagasDisponiveis.forEach(vaga => { %>
+      <li>
+        <h3><%= vaga.titulo %></h3>
+        <p><strong>Descrição:</strong> <%= vaga.descricao %></p>
+        <p><strong>Cargo/Função:</strong> <%= vaga.cargoFuncao %></p>
+        <p><strong>Salário:</strong> <%= vaga.faixaSalarial %></p>
+        <form action="/candidato/candidatar" method="POST">
+          <input type="hidden" name="vagaId" value="<%= vaga.id %>">
+          <button type="submit">Candidatar-se</button>
+        </form>
+      </li>
+    <% }); %>
+  </ul>
   
-      <div class="inscrito">
-        <h2>Vagas em que você já se candidatou</h2>
+  <!-- Paginador -->
+  <div class="paginador">
+    <% if (currentPage > 1) { %>
+      <a href="?page=<%= currentPage - 1 %>&busca=<%= busca %>">Anterior</a>
+    <% } %>
+
+    <% for (let i = 1; i <= totalPages; i++) { %>
+      <% if (i === currentPage) { %>
+        <strong><%= i %></strong>
+      <% } else { %>
+        <a href="?page=<%= i %>&busca=<%= busca %>"><%= i %></a>
+      <% } %>
+    <% } %>
+
+    <% if (currentPage < totalPages) { %>
+      <a href="?page=<%= currentPage + 1 %>&busca=<%= busca %>">Próxima</a>
+    <% } %>
+  </div>
+<% } else { %>
+  <p>Nenhuma vaga disponível.</p>
+<% } %>
+
+      
+      <h2>Vagas em que você já se candidatou</h2>
+      <% if (vagasCandidatadas.length > 0) { %>
         <ul>
-          <% if (vagasCandidatadas.length > 0) { %>
-            <% vagasCandidatadas.forEach(vaga => { %>
-              <li><h3><%= vaga.titulo %></h3>
-                <p><%= vaga.descricao %></p>
-                <strong>R$ <%= vaga.salario.toFixed(2) %></strong></li>
-            <% }) %>
-          <% } else { %>
-            <p>Você ainda não se candidatou a nenhuma vaga.</p>
-          <% } %>
+          <% vagasCandidatadas.forEach(vaga => { %>
+            <li>
+              <h3><%= vaga.titulo %></h3>
+              <p><strong>Descrição:</strong> <%= vaga.descricao %></p>
+              <p><strong>Salário:</strong> <%= vaga.faixaSalarial %></p>
+            </li>
+          <% }); %>
+        </ul>
+      <% } else { %>
+        <p>Você ainda não se candidatou a nenhuma vaga.</p>
+      <% } %>
+      
         </ul>
       </div>
     </div>

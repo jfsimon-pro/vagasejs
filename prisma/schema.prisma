@@ -25,6 +25,12 @@ model Empresa {
   responsavel    String
   email          String   @unique
   senha          String
+  logo           String?  // Caminho para a logo da empresa
+  sobre          String?  // Descrição da empresa
+  twitter        String?  // Link para o Twitter
+  instagram      String?  // Link para o Instagram
+  facebook       String?  // Link para o Facebook
+  linkedin       String?  // Link para o LinkedIn
   vagas          Vaga[]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
@@ -46,6 +52,8 @@ model Candidato {
   uf             String
   curriculo      String
   candidaturas   Candidatura[]
+  cursos         Curso[]
+  experienciasProfissionais ExperienciaProfissional[]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -54,8 +62,16 @@ model Vaga {
   id             String         @id @default(uuid())
   titulo         String
   descricao      String
-  salario        Float
   tags           String[]
+  cargo          String
+  faixaSalarial  String
+  tipoContrato   String
+  disponibilidade String?
+  horarioTrabalho String?
+  tipoTrabalho   String
+  escolaridade   String
+  idiomas        String[]
+  beneficios     String[]
   empresaId      String
   empresa        Empresa        @relation(fields: [empresaId], references: [id], onDelete: Cascade)
   candidaturas   Candidatura[]
@@ -76,4 +92,27 @@ model Admin {
   id             String   @id @default(uuid())
   email          String   @unique
   senha          String
+}
+model Curso {
+  id             String     @id @default(uuid())
+  instituicao    String
+  curso          String
+  dataInicio     DateTime
+  dataConclusao  DateTime?
+  candidatoId    String
+  candidato      Candidato   @relation(fields: [candidatoId], references: [id], onDelete: Cascade)
+  createdAt      DateTime    @default(now())
+}
+
+model ExperienciaProfissional {
+  id             String     @id @default(uuid())
+  empresa        String
+  cargo          String
+  funcao         String
+  dataEntrada    DateTime
+  dataSaida      DateTime?
+  motivo         String?
+  candidatoId    String
+  candidato      Candidato   @relation(fields: [candidatoId], references: [id], onDelete: Cascade)
+  createdAt      DateTime    @default(now())
 }

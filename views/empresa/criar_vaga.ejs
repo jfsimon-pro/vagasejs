@@ -3,12 +3,82 @@
     <div class="content-main-login">
       <h1>Criar Nova Vaga</h1>
       <form action="/empresa/vagas/criar" method="POST">
-        <input type="text" name="titulo" placeholder="Título da Vaga" required>
-        <textarea name="descricao" placeholder="Descrição da Vaga" required></textarea>
-        <input type="number" step="0.01" name="salario" placeholder="Salário" required>
-        <input type="text" name="tags" placeholder="Tags (separadas por vírgula)" required>
+        <label for="titulo">Título da Vaga:</label>
+        <input type="text" id="titulo" name="titulo" required>
+      
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" name="descricao" required></textarea>
+      
+        <label for="tags">Tags (separadas por vírgula):</label>
+        <input type="text" id="tags" name="tags">
+      
+        <label for="cargo">Cargo/Função:</label>
+        <select id="cargo" name="cargo" required>
+          <option value="">Selecione</option>
+          <!-- Lista de Cargos -->
+          <option value="Programador">Programador</option>
+          <option value="Desenvolvedor Front-end">Desenvolvedor Front-end</option>
+          <!-- Continue com os demais cargos fornecidos -->
+        </select>
+      
+        <label for="faixaSalarial">Faixa Salarial:</label>
+        <select id="faixaSalarial" name="faixaSalarial" required>
+          <option value="">Selecione</option>
+          <option value="R$1.000 - R$4.000">R$1.000 - R$4.000</option>
+          <option value="R$5.000 - R$8.000">R$5.000 - R$8.000</option>
+          <!-- Adicione mais opções conforme necessário -->
+        </select>
+      
+        <label for="tipoContrato">Tipo de Contrato:</label>
+        <select id="tipoContrato" name="tipoContrato" required>
+          <option value="">Selecione</option>
+          <option value="CLT">CLT</option>
+          <option value="PJ">PJ</option>
+          <option value="Estágio">Estágio</option>
+        </select>
+      
+        <label for="disponibilidade">Disponibilidade:</label>
+        <input type="text" id="disponibilidade" name="disponibilidade">
+      
+        <label for="horarioTrabalho">Horário de Trabalho:</label>
+        <input type="text" id="horarioTrabalho" name="horarioTrabalho">
+      
+        <label for="tipoTrabalho">Tipo de Trabalho:</label>
+        <select id="tipoTrabalho" name="tipoTrabalho" required>
+          <option value="">Selecione</option>
+          <option value="Presencial">Presencial</option>
+          <option value="Remoto">Remoto</option>
+          <option value="Híbrido">Híbrido</option>
+        </select>
+      
+        <label for="escolaridade">Escolaridade:</label>
+        <select id="escolaridade" name="escolaridade" required>
+          <option value="">Selecione</option>
+          <option value="Ensino Fundamental Incompleto">Ensino Fundamental Incompleto</option>
+          <option value="Ensino Fundamental Completo">Ensino Fundamental Completo</option>
+          <!-- Continue com as demais opções -->
+        </select>
+      
+        <label for="idiomas">Idiomas:</label>
+        <select id="idiomas" name="idiomas[]" multiple required>
+          <option value="Inglês">Inglês</option>
+          <option value="Português">Português</option>
+          <option value="Espanhol">Espanhol</option>
+          <option value="Outros">Outros</option>
+        </select>
+      
+        <label for="beneficios">Benefícios:</label>
+        <select id="beneficios" name="beneficios[]" multiple required>
+          <option value="VA">VA</option>
+          <option value="VR">VR</option>
+          <option value="Plano Odonto">Plano Odonto</option>
+          <option value="Plano de Saúde">Plano de Saúde</option>
+          <option value="GymPass">GymPass</option>
+        </select>
+      
         <button type="submit">Criar Vaga</button>
       </form>
+      
     </div>
   </div>
   <a href="/empresa/vagas">Voltar para Minhas Vagas</a>

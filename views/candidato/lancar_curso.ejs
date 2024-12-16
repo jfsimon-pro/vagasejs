@@ -1,0 +1,48 @@
+<%- include('../partials/header') %>
+  <section class="candidato-superior">
+    <div class="main-dashboard-candidato">
+      <h1>Lançar Novo Curso</h1>
+
+      <form action="/candidato/lancar-curso" method="POST">
+        <label for="instituicao">Instituição:</label>
+        <input type="text" id="instituicao" name="instituicao" required>
+
+        <label for="curso">Curso:</label>
+        <input type="text" id="curso" name="curso" required>
+
+        <label for="dataInicio">Data de Início:</label>
+        <input type="date" id="dataInicio" name="dataInicio" required>
+
+        <label for="dataConclusao">Data de Conclusão:</label>
+        <input type="date" id="dataConclusao" name="dataConclusao">
+
+        <button type="submit">Salvar Curso</button>
+      </form>
+
+      <hr>
+
+      <h2>Meus Cursos</h2>
+      <ul>
+        <% if (cursos.length> 0) { %>
+          <% cursos.forEach(curso=> { %>
+            <li>
+              <strong>
+                <%= curso.curso %>
+              </strong> - <%= curso.instituicao %>
+                (<%= curso.dataInicio.toLocaleDateString() %> a
+                  <%= curso.dataConclusao ? curso.dataConclusao.toLocaleDateString() : 'Atual' %>)
+                    <form action="/candidato/lancar-curso/excluir/<%= curso.id %>" method="POST"
+                      style="display: inline;">
+                      <button type="submit"
+                        onclick="return confirm('Tem certeza que deseja excluir este curso?')">Excluir</button>
+                    </form>
+            </li>
+            <% }) %>
+              <% } else { %>
+                <p>Você ainda não listou nenhum curso.</p>
+                <% } %>
+      </ul>
+
+    </div>
+  </section>
+  <%- include('../partials/footer') %>

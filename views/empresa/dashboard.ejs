@@ -7,6 +7,23 @@
       <a href="/empresa/vagas/criar">Criar Vaga</a>
     </div>
     <div class="seus-dados">
+      <% if (empresa.logo) { %>
+        <img src="/<%= empresa.logo %>" alt="Logo da empresa" style="max-width: 150px; max-height: 150px;">
+      <% } else { %>
+        <p>Sem logo disponível</p>
+      <% } %>
+      
+      
+      <p><strong>Razão Social:</strong> <%= empresa.razaoSocial %></p>
+      <p><strong>CNPJ:</strong> <%= empresa.cnpj %></p>
+      <p><strong>Telefone:</strong> <%= empresa.telefone %></p>
+      <p><strong>Whatsapp:</strong> <%= empresa.whatsapp %></p>
+      <p><strong>Endereço:</strong> <%= empresa.logradouro %>, <%= empresa.numero %>, <%= empresa.bairro %>, <%= empresa.cidade %> - <%= empresa.uf %></p>
+    
+      <% if (empresa.sobre) { %>
+        <p><strong>Sobre:</strong> <%= empresa.sobre %></p>
+      <% } %>
+      <a href="/empresa/editar-perfil" class="btn-editar-perfil">Editar Perfil</a>
       <h2>Dados Oficiais de Registro da sua empresa</h2>
       <form action="/empresa/editar" method="POST">
         <div class="conteudo-form">

@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const helmet = require('helmet');
+const path = require('path');
 const authRoutes = require('./routes/auth');
 const empresaRoutes = require('./routes/empresa');
 const candidatoRoutes = require('./routes/candidato');

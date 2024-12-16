@@ -16,11 +16,20 @@
         <% } else { %>
           <% vagas.forEach(vaga => { %>
             <li>
-              <h3><%= vaga.titulo %></h3>
-              <p class="descricao-vaga"><strong>Descrição:</strong></p>
+              <h2><%= vaga.titulo %></h2>
+              <p><strong>Descrição:</strong></p>
               <p class="vaga-descrita"><%= vaga.descricao %></p>
-              <p><strong>Salário:</strong> R$ <%= vaga.salario.toFixed(2) %></p>
-              <p><strong>Tags:</strong> <%= vaga.tags.join(', ') %></p>
+              <p><strong>Faixa Salarial:</strong> <%= vaga.faixaSalarial %></p>
+              <p><strong>Cargo/Função:</strong> <%= vaga.cargo %></p>
+              <p><strong>Tipo de Contrato:</strong> <%= vaga.tipoContrato %></p>
+              <p><strong>Disponibilidade:</strong> <%= vaga.disponibilidade || 'Não especificado' %></p>
+              <p><strong>Horário de Trabalho:</strong> <%= vaga.horarioTrabalho || 'Não especificado' %></p>
+              <p><strong>Tipo de Trabalho:</strong> <%= vaga.tipoTrabalho %></p>
+              <p><strong>Escolaridade:</strong> <%= vaga.escolaridade %></p>
+              <p><strong>Idiomas:</strong> <%= vaga.idiomas.length > 0 ? vaga.idiomas.join(', ') : 'Não especificado' %></p>
+              <p><strong>Benefícios:</strong> <%= vaga.beneficios.length > 0 ? vaga.beneficios.join(', ') : 'Não especificado' %></p>
+              <p><strong>Tags:</strong> <%= vaga.tags.length > 0 ? vaga.tags.join(', ') : 'Não especificado' %></p>
+
     
               <div class="botoes-gerenciar-vagas">
                 
@@ -28,6 +37,7 @@
                 <form action="/empresa/vagas/excluir/<%= vaga.id %>" method="POST">
                   <button type="submit">Excluir</button>
                 </form>
+
               </div>
             </li>
           <% }) %>

@@ -1,26 +1,45 @@
 <%- include('../partials/header') %>
-<div class="main-candidatos-vaga">
-    <div class="content-candidatos-vaga">
-        <div class="cabecalho-candidato-vagas">
-            <h1>Candidatos para a vaga: <%= vaga.titulo %></h1>
-            <a href="/empresa/vagas">Voltar para minhas vagas</a>
-        </div>
-        <% if (vaga.candidaturas.length === 0) { %>
-          <p>Não há candidatos inscritos nesta vaga.</p>
-        <% } else { %>
-          <ul>
-            <% vaga.candidaturas.forEach(candidatura => { %>
-              <li>
-                <p><strong>Nome:</strong> <%= candidatura.candidato.nomeCompleto %></p><br>
-                <p><strong>Telefone:</strong> <%= candidatura.candidato.telefone %></p><br>
-                <p><strong>E-mail:</strong> <%= candidatura.candidato.email %></p><br>
-                <p><strong>Currículo:</strong>
-                    <a href="/uploads/<%= candidatura.candidato.curriculo.split('/').pop() %>" target="_blank">Ver Currículo</a></p>
-              </li>
-            <% }) %>
-          </ul>
-        <% } %>
-        
-    </div>
+
+<div class="candidatos-container">
+  <h1>Candidatos para a vaga</h1>
+
+  <form action="/empresa/vagas/<%= vagaId %>/candidatos" method="GET" style="margin-bottom: 20px;">
+    <input
+      type="text"
+      name="busca"
+      placeholder="Buscar candidatos..."
+      value="<%= busca || '' %>">
+    <button type="submit">Buscar</button>
+  </form>
+
+  <% if (candidatos.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Cidade</th>
+          <th>Email</th>
+          <th>Telefone</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% candidatos.forEach(candidato => { %>
+          <tr>
+            <td><%= candidato.nomeCompleto %></td>
+            <td><%= candidato.cidade %></td>
+            <td><%= candidato.email %></td>
+            <td><%= candidato.telefone %></td>
+            <td>
+              <a href="/empresa/candidatos/<%= candidato.id %>">Ver mais</a>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p>Nenhum candidato encontrado.</p>
+  <% } %>
 </div>
+
 <%- include('../partials/footer') %>

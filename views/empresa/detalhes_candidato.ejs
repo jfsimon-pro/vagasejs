@@ -1,0 +1,69 @@
+<%- include('../partials/header') %>
+
+<div class="detalhes-candidato-container">
+  <h1>Detalhes do Candidato</h1>
+  <p><strong>Nome:</strong> <%= candidato.nomeCompleto %></p>
+  <p><strong>CPF:</strong> <%= candidato.cpf %></p>
+  <p><strong>E-mail:</strong> <%= candidato.email %></p>
+  <p><strong>Telefone:</strong> <%= candidato.telefone %></p>
+  <p><strong>Endereço:</strong> <%= candidato.logradouro %>, <%= candidato.complemento %>, 
+    <%= candidato.numero %>, <%= candidato.bairro %> - <%= candidato.cidade %> / <%= candidato.uf %>, 
+    CEP: <%= candidato.cep %></p>
+    <h2>Currículo</h2>
+<% if (candidato.curriculo) { %>
+  <p>
+    <a href="/uploads/<%= candidato.curriculo.split('/').pop() %>" target="_blank">
+      Visualizar Currículo
+    </a>
+  </p>
+<% } else { %>
+  <p>Sem currículo anexado.</p>
+<% } %>
+
+
+  <h2>Cursos</h2>
+  <% if (candidato.cursos.length > 0) { %>
+    <ul>
+      <% candidato.cursos.forEach(curso => { %>
+        <li>
+          <strong>Instituição:</strong> <%= curso.instituicao %><br>
+          <strong>Curso:</strong> <%= curso.curso %><br>
+          <strong>Data de Início:</strong> <%= curso.dataInicio.toLocaleDateString() %><br>
+          <% if (curso.dataConclusao) { %>
+            <strong>Data de Conclusão:</strong> <%= curso.dataConclusao.toLocaleDateString() %>
+          <% } else { %>
+            <strong>Data de Conclusão:</strong> Em andamento
+          <% } %>
+        </li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>Sem cursos cadastrados.</p>
+  <% } %>
+
+  <h2>Experiências Profissionais</h2>
+  <% if (candidato.experienciasProfissionais.length > 0) { %>
+    <ul>
+      <% candidato.experienciasProfissionais.forEach(exp => { %>
+        <li>
+          <strong>Empresa:</strong> <%= exp.empresa %><br>
+          <strong>Cargo:</strong> <%= exp.cargo %><br>
+          <strong>Função:</strong> <%= exp.funcao %><br>
+          <strong>Data de Entrada:</strong> <%= exp.dataEntrada.toLocaleDateString() %><br>
+          <% if (exp.dataSaida) { %>
+            <strong>Data de Saída:</strong> <%= exp.dataSaida.toLocaleDateString() %><br>
+          <% } else { %>
+            <strong>Data de Saída:</strong> Atualmente trabalhando
+          <% } %>
+          <strong>Motivo de Saída:</strong> <%= exp.motivo %>
+        </li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>Sem experiências profissionais cadastradas.</p>
+  <% } %>
+
+  <a href="javascript:history.back()" class="btn">Voltar</a>
+</div>
+
+<%- include('../partials/footer') %>
