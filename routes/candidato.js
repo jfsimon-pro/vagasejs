@@ -27,16 +27,19 @@ const verifyToken = (req, res, next) => {
 
 router.get('/dashboard', verifyToken, async (req, res) => {
   const { busca, page = 1 } = req.query; // Captura o filtro de busca e a página atual
-  const perPage = 3; // Quantidade de vagas por página
+  const perPage = 4; // Quantidade de vagas por página
   const currentPage = parseInt(page, 10) || 1;
 
   try {
+    // Buscar informações do candidato
     const candidato = await prisma.candidato.findUnique({
       where: { id: req.user.userId },
       include: {
         candidaturas: {
           include: {
-            vaga: true,
+            vaga: {
+              include: { empresa: true }, // Inclui informações da empresa na vaga
+            },
           },
         },
       },
@@ -46,8 +49,10 @@ router.get('/dashboard', verifyToken, async (req, res) => {
       return res.status(404).send('Candidato não encontrado.');
     }
 
+    // IDs das vagas em que o candidato já se candidatou
     const vagasCandidatadasIds = candidato.candidaturas.map(c => c.vagaId);
 
+    // Filtro para vagas disponíveis
     const whereDisponiveis = busca
       ? {
           AND: [
@@ -65,7 +70,10 @@ router.get('/dashboard', verifyToken, async (req, res) => {
           id: { notIn: vagasCandidatadasIds },
         };
 
+    // Total de vagas disponíveis
     const totalVagasDisponiveis = await prisma.vaga.count({ where: whereDisponiveis });
+
+    // Paginação e busca das vagas disponíveis
     const vagasDisponiveis = await prisma.vaga.findMany({
       where: whereDisponiveis,
       orderBy: { createdAt: 'desc' },
@@ -73,13 +81,35 @@ router.get('/dashboard', verifyToken, async (req, res) => {
       take: perPage,
     });
 
+    // Vagas em que o candidato já se candidatou
     const vagasCandidatadas = candidato.candidaturas.map(c => c.vaga);
 
+// Vagas em que o candidato foi aprovado e se já avaliou a empresa
+const vagasAprovadas = await Promise.all(
+  candidato.candidaturas
+    .filter(c => c.selecionado)
+    .map(async c => {
+      const avaliacaoExistente = await prisma.avaliacao.findFirst({
+        where: {
+          candidatoId: req.user.userId,
+          empresaId: c.vaga.empresaId,
+        },
+      });
+
+      return {
+        ...c.vaga,
+        jaAvaliada: !!avaliacaoExistente, // Adiciona uma flag se a empresa foi avaliada
+      };
+    })
+);
+
+    // Renderizar a dashboard com todas as informações
     res.render('candidato/dashboard', {
       candidato,
       vagasDisponiveis,
       totalVagasDisponiveis,
       vagasCandidatadas,
+      vagasAprovadas,
       busca: busca || '',
       currentPage,
       totalPages: Math.ceil(totalVagasDisponiveis / perPage),
@@ -89,6 +119,7 @@ router.get('/dashboard', verifyToken, async (req, res) => {
     res.status(500).send('Erro ao carregar dashboard.');
   }
 });
+
 
 
 
@@ -343,6 +374,187 @@ router.get('/vagas', verifyToken, async (req, res) => {
     res.status(500).send('Erro ao carregar as vagas disponíveis.');
   }
 });
+
+// Rota para exibir formulário de avaliação
+router.get('/avaliar/:empresaId', verifyToken, async (req, res) => {
+  const { empresaId } = req.params;
+
+  try {
+    const empresa = await prisma.empresa.findUnique({
+      where: { id: empresaId },
+    });
+
+    if (!empresa) {
+      return res.status(404).send('Empresa não encontrada.');
+    }
+
+    res.render('candidato/avaliar_empresa', { empresa });
+  } catch (error) {
+    console.error('Erro ao carregar formulário de avaliação:', error);
+    res.status(500).send('Erro ao carregar a página.');
+  }
+});
+
+// Rota para salvar avaliação
+router.post('/avaliar/:empresaId', verifyToken, async (req, res) => {
+  const { empresaId } = req.params;
+  const { nota, comentario } = req.body;
+
+  try {
+    // Salva a avaliação no banco
+    await prisma.avaliacao.create({
+      data: {
+        candidatoId: req.user.userId,
+        empresaId,
+        nota: parseInt(nota, 10),
+        comentario,
+      },
+    });
+
+    res.redirect('/candidato/dashboard');
+  } catch (error) {
+    console.error('Erro ao salvar avaliação:', error);
+    res.status(500).send('Erro ao salvar a avaliação.');
+  }
+});
+
+router.get('/perfil/:id', async (req, res) => {
+  console.log('Acessando a rota de perfil da empresa com ID:', req.params.id);
+  const { id } = req.params;
+
+  try {
+    const empresa = await prisma.empresa.findUnique({
+      where: { id },
+      select: {
+        nomeFantasia: true,
+        razaoSocial: true,
+        cnpj: true,
+        logradouro: true,
+        numero: true,
+        complemento: true,
+        bairro: true,
+        cidade: true,
+        uf: true,
+        telefone: true,
+        whatsapp: true,
+        sobre: true,
+        redesSociais: true,
+        logo: true,
+      },
+    });
+
+    if (!empresa) {
+      return res.status(404).send('Empresa não encontrada.');
+    }
+
+    res.render('empresa/perfil', { empresa });
+  } catch (error) {
+    console.error('Erro ao carregar perfil da empresa:', error);
+    res.status(500).send('Erro ao carregar perfil da empresa.');
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.get('/vagas/:vagaId/avaliar', verifyToken, async (req, res) => {
+  const { vagaId } = req.params;
+
+  try {
+    // Verificar a vaga e a empresa associada
+    const vaga = await prisma.vaga.findUnique({
+      where: { id: vagaId },
+      include: { empresa: true },
+    });
+
+    if (!vaga) {
+      return res.status(404).send('Vaga não encontrada.');
+    }
+
+    // Verificar se o candidato já avaliou a empresa
+    const avaliacaoExistente = await prisma.avaliacao.findFirst({
+      where: {
+        candidatoId: req.user.userId,
+        empresaId: vaga.empresaId,
+      },
+    });
+
+    if (avaliacaoExistente) {
+      return res.redirect(`/candidato/dashboard?error=Você já avaliou esta empresa.`);
+    }
+
+    res.render('candidato/avaliar_empresa', {
+      vaga,
+      empresa: vaga.empresa,
+    });
+  } catch (error) {
+    console.error('Erro ao carregar formulário de avaliação:', error);
+    res.status(500).send('Erro ao carregar formulário de avaliação.');
+  }
+});
+
+
+router.post('/vagas/:vagaId/avaliar', verifyToken, async (req, res) => {
+  const { vagaId } = req.params;
+  const { nota, comentario } = req.body;
+
+  try {
+    // Verificar a vaga e a empresa associada
+    const vaga = await prisma.vaga.findUnique({
+      where: { id: vagaId },
+    });
+
+    if (!vaga) {
+      return res.status(404).send('Vaga não encontrada.');
+    }
+
+    // Verificar se o candidato já avaliou a empresa
+    const avaliacaoExistente = await prisma.avaliacao.findFirst({
+      where: {
+        candidatoId: req.user.userId,
+        empresaId: vaga.empresaId,
+      },
+    });
+
+    if (avaliacaoExistente) {
+      return res.redirect(`/candidato/dashboard?error=Você já avaliou esta empresa.`);
+    }
+
+    // Criar a avaliação
+    await prisma.avaliacao.create({
+      data: {
+        candidatoId: req.user.userId,
+        empresaId: vaga.empresaId,
+        nota: parseInt(nota, 10),
+        comentario,
+      },
+    });
+
+    res.redirect(`/candidato/dashboard?success=Avaliação registrada com sucesso.`);
+  } catch (error) {
+    console.error('Erro ao registrar avaliação:', error);
+    res.status(500).send('Erro ao registrar avaliação.');
+  }
+});
+
 
 
 module.exports = router;

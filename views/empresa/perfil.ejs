@@ -1,0 +1,31 @@
+<%- include('./header') %>
+<div class="perfil-empresa">
+  <h1><%= empresa.nomeFantasia %></h1>
+  <% if (empresa.logo) { %>
+    <img src="/uploads/<%= empresa.logo %>" alt="Logo da Empresa" style="max-width: 150px;">
+  <% } %>
+
+  <p><strong>Razão Social:</strong> <%= empresa.razaoSocial %></p>
+  <p><strong>Endereço:</strong> <%= empresa.logradouro %>, <%= empresa.numero %>, <%= empresa.complemento %>, <%= empresa.bairro %>, <%= empresa.cidade %> - <%= empresa.uf %></p>
+  <p><strong>Telefone:</strong> <%= empresa.telefone %></p>
+  <p><strong>WhatsApp:</strong> <%= empresa.whatsapp %></p>
+  
+  <% if (empresa.sobre) { %>
+    <p><strong>Sobre a empresa:</strong> <%= empresa.sobre %></p>
+  <% } %>
+
+  <h2>Avaliações</h2>
+  <p><strong>Nota Média:</strong> <%= notaMedia %> de 5</p>
+
+  <% if (empresa.twitter || empresa.instagram || empresa.facebook || empresa.linkedin) { %>
+    <h3>Redes Sociais</h3>
+    <ul>
+      <% if (empresa.twitter) { %> <li>Twitter: <a href="<%= empresa.twitter %>" target="_blank"><%= empresa.twitter %></a></li> <% } %>
+      <% if (empresa.instagram) { %> <li>Instagram: <a href="<%= empresa.instagram %>" target="_blank"><%= empresa.instagram %></a></li> <% } %>
+      <% if (empresa.facebook) { %> <li>Facebook: <a href="<%= empresa.facebook %>" target="_blank"><%= empresa.facebook %></a></li> <% } %>
+      <% if (empresa.linkedin) { %> <li>LinkedIn: <a href="<%= empresa.linkedin %>" target="_blank"><%= empresa.linkedin %></a></li> <% } %>
+    </ul>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

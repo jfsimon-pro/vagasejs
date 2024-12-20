@@ -1,45 +1,113 @@
-<%- include('../partials/header') %>
+<%- include('./header') %>
+<style>
+  .content-main-login {
+    background: white;
+    max-width: 90vw;
+    width: 100%;
+  }
+  .candidatos-container h1 {
+    color: black;
+  }
+  .candidatos-container {
+    width: 100%;
+  }
+  .candidatos-container form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  .candidatos-container form input {
+    width: 80%;
+  }
+  .candidatos-container form button {
+    width: 15%;
+  }
+  .candidatos-container table {
+    width: 100%;
+  }
+  .candidatos-container th {
+    text-align: left;
+    font-size: 18px;
+    font-weight: bold;
+  }
+.candidatos-container th, .candidatos-container td {
+  padding: 20px;
+}
+.candidatos-container tr:nth-child(odd) {
+    background-color: white;
+}
 
-<div class="candidatos-container">
-  <h1>Candidatos para a vaga</h1>
+.candidatos-container tr:nth-child(even) {
+    background-color: #aeaeae44;
+}
+.btnselecionar {
+  width: unset !important;
+}
 
-  <form action="/empresa/vagas/<%= vagaId %>/candidatos" method="GET" style="margin-bottom: 20px;">
-    <input
-      type="text"
-      name="busca"
-      placeholder="Buscar candidatos..."
-      value="<%= busca || '' %>">
-    <button type="submit">Buscar</button>
-  </form>
+</style>
+  <div class="main-login">
 
-  <% if (candidatos.length > 0) { %>
-    <table>
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Cidade</th>
-          <th>Email</th>
-          <th>Telefone</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% candidatos.forEach(candidato => { %>
-          <tr>
-            <td><%= candidato.nomeCompleto %></td>
-            <td><%= candidato.cidade %></td>
-            <td><%= candidato.email %></td>
-            <td><%= candidato.telefone %></td>
-            <td>
-              <a href="/empresa/candidatos/<%= candidato.id %>">Ver mais</a>
-            </td>
-          </tr>
-        <% }); %>
-      </tbody>
-    </table>
-  <% } else { %>
-    <p>Nenhum candidato encontrado.</p>
-  <% } %>
-</div>
+    <div class="content-main-login">
+      <div class="candidatos-container">
+        <h1>Candidatos para a vaga</h1>
 
-<%- include('../partials/footer') %>
+        <form action="/empresa/vagas/<%= vagaId %>/candidatos" method="GET" style="margin-bottom: 20px;">
+          <input type="text" name="busca" placeholder="Buscar candidaturas..." value="<%= busca || '' %>">
+          <button type="submit">Buscar</button>
+        </form>
+        <% if (candidaturas.length> 0) { %>
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Telefone</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% candidaturas.forEach(candidatura=> { %>
+                <tr>
+                  <td>
+                    <%= candidatura.candidato.nomeCompleto %>
+                  </td>
+                  <td>
+                    <%= candidatura.candidato.email %>
+                  </td>
+                  <td>
+                    <%= candidatura.candidato.telefone %>
+                  </td>
+                  <td>
+                    <a href="/empresa/candidatos/<%= candidatura.candidato.id %>">Ver mais</a>
+
+
+                  <td>
+                    <% if (candidatura.selecionado) { %>
+                      <span class="badge badge-success">Selecionado</span>
+                      <% } else { %>
+                        <form
+                          action="/empresa/vagas/<%= vagaId %>/candidatos/<%= candidatura.candidato.id %>/selecionar"
+                          method="POST">
+                          <button type="submit" class="btn btn-success btnselecionar">Selecionar</button>
+                        </form>
+                        <% } %>
+                  </td>
+
+
+
+
+                  </td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+          <% } else { %>
+            <p>Nenhum candidato encontrado para esta vaga.</p>
+            <% } %>
+
+
+      </div>
+    </div>
+  </div>
+  <%- include('../partials/footer') %>

@@ -25,13 +25,14 @@ model Empresa {
   responsavel    String
   email          String   @unique
   senha          String
-  logo           String?  // Caminho para a logo da empresa
-  sobre          String?  // Descrição da empresa
-  twitter        String?  // Link para o Twitter
-  instagram      String?  // Link para o Instagram
-  facebook       String?  // Link para o Facebook
-  linkedin       String?  // Link para o LinkedIn
+  sobre          String? // Texto sobre a empresa
+  twitter        String? // Link do Twitter
+  instagram      String? // Link do Instagram
+  facebook       String? // Link do Facebook
+  linkedin       String? // Link do LinkedIn
+  logo           String? // Caminho da logo da empresa
   vagas          Vaga[]
+  avaliacoes     Avaliacao[] // Relacionamento com Avaliacao
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -54,6 +55,7 @@ model Candidato {
   candidaturas   Candidatura[]
   cursos         Curso[]
   experienciasProfissionais ExperienciaProfissional[]
+  avaliacoes     Avaliacao[] // Relacionamento com Avaliacao
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -80,13 +82,17 @@ model Vaga {
 }
 
 model Candidatura {
-  id             String     @id @default(uuid())
-  candidatoId    String
-  vagaId         String
-  candidato      Candidato  @relation(fields: [candidatoId], references: [id])
-  vaga           Vaga       @relation(fields: [vagaId], references: [id], onDelete: Cascade) // Cascata configurada aqui
-  createdAt      DateTime   @default(now())
+  id           String   @id @default(uuid())
+  candidatoId  String
+  vagaId       String
+  selecionado  Boolean  @default(false)
+  candidato    Candidato @relation(fields: [candidatoId], references: [id])
+  vaga         Vaga      @relation(fields: [vagaId], references: [id])
+  createdAt    DateTime  @default(now())
+
+  @@unique([candidatoId, vagaId]) // Define a chave única composta
 }
+
 
 model Admin {
   id             String   @id @default(uuid())
@@ -115,4 +121,15 @@ model ExperienciaProfissional {
   candidatoId    String
   candidato      Candidato   @relation(fields: [candidatoId], references: [id], onDelete: Cascade)
   createdAt      DateTime    @default(now())
+}
+
+model Avaliacao {
+  id           String   @id @default(uuid())
+  candidatoId  String
+  candidato    Candidato @relation(fields: [candidatoId], references: [id])
+  empresaId    String
+  empresa      Empresa   @relation(fields: [empresaId], references: [id])
+  nota         Int       // Nota de 0 a 5
+  comentario   String?   // Comentário opcional
+  createdAt    DateTime  @default(now())
 }

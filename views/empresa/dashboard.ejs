@@ -1,14 +1,14 @@
-<%- include('../partials/header') %>
+<%- include('./header') %>
   <div class="main-dashboard">
     <h1>Bem-vindo, <%= empresa.nomeFantasia %>!</h1>
     <div class="opcoes">
-      <a href="/auth/logout">Logout</a>
       <a href="/empresa/vagas">Ver Minhas Vagas</a>
       <a href="/empresa/vagas/criar">Criar Vaga</a>
+      <a href="/empresa/editar-perfil" class="btn-editar-perfil">Editar Perfil Social</a>
     </div>
     <div class="seus-dados">
       <% if (empresa.logo) { %>
-        <img src="/<%= empresa.logo %>" alt="Logo da empresa" style="max-width: 150px; max-height: 150px;">
+        <img src="/<%= empresa.logo %>" alt="Logo da empresa" style="max-width: 400px; max-height: 400px;">
       <% } else { %>
         <p>Sem logo disponível</p>
       <% } %>
@@ -23,8 +23,8 @@
       <% if (empresa.sobre) { %>
         <p><strong>Sobre:</strong> <%= empresa.sobre %></p>
       <% } %>
-      <a href="/empresa/editar-perfil" class="btn-editar-perfil">Editar Perfil</a>
-      <h2>Dados Oficiais de Registro da sua empresa</h2>
+      <div class="linha"></div>
+      <h2>Dados Oficiais de Registro da sua empresa</h2><br>
       <form action="/empresa/editar" method="POST">
         <div class="conteudo-form">
 
@@ -56,8 +56,8 @@
             <input type="text" name="cep" value="<%= empresa.cep %>" required>
           </div>    
           <div class="s-campo">
-            <strong>Endereço:</strong>
-            <input type="text" name="endereco" value="<%= empresa.endereco %>" required>  
+            <strong>Logradouro:</strong>
+            <input type="text" name="logradouro" value="<%= empresa.logradouro %>" required>  
           </div> 
 
         </div>
@@ -81,7 +81,7 @@
 
           <div class="s-campo">
             <strong>Estado:</strong>
-            <input type="text" name="estado" value="<%= empresa.estado %>" required>
+            <input type="text" name="uf" value="<%= empresa.uf %>" required>
           </div>    
           <div class="s-campo">
             <strong>Telefone:</strong>

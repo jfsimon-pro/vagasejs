@@ -1,36 +1,48 @@
-<%- include('../partials/header') %>
-<div class="main-container">
-  <h1>Editar Perfil</h1>
+<%- include('./header') %>
+  <div class="main-container">
+    <div class="main-login">
 
-  <% if (typeof error !== 'undefined' && error) { %>
-    <div class="alert alert-danger">
-      <%= error %>
+      <div class="content-main-login">
+        <h1>Editar Perfil</h1>
+
+        <% if (typeof error !=='undefined' && error) { %>
+          <div class="alert alert-danger">
+            <%= error %>
+          </div>
+          <% } %>
+
+            <form action="/empresa/editar-perfil" method="POST" enctype="multipart/form-data">
+              <div class="separador-campos">
+                <label for="logo">Logo da Empresa</label>
+                <input type="file" id="logo" name="logo">
+              </div>
+              <div class="separador-campos">
+                <label for="sobre">Sobre a Empresa</label>
+                <textarea id="sobre" name="sobre"><%= empresa.sobre || '' %></textarea>
+              </div>
+              <div class="separador-campos">
+                <label for="twitter">Twitter</label>
+                <input type="text" id="twitter" name="twitter" value="<%= empresa.twitter || '' %>">
+              </div>
+              <div class="separador-campos">
+                <label for="instagram">Instagram</label>
+                <input type="text" id="instagram" name="instagram" value="<%= empresa.instagram || '' %>">
+              </div>
+              <div class="separador-campos">
+                <label for="facebook">Facebook</label>
+                <input type="text" id="facebook" name="facebook" value="<%= empresa.facebook || '' %>">
+              </div>
+              <div class="separador-campos">
+                <label for="linkedin">LinkedIn</label>
+                <input type="text" id="linkedin" name="linkedin" value="<%= empresa.linkedin || '' %>">
+              </div>
+              <div class="separador-campos">
+                <label for="whatsapp">WhatsApp</label>
+                <input type="text" id="whatsapp" name="whatsapp" value="<%= empresa.whatsapp || '' %>">
+              </div>
+              <button type="submit">Salvar</button>
+            </form>
+      </div>
     </div>
-  <% } %>
-
-  <form action="/empresa/editar-perfil" method="POST" enctype="multipart/form-data">
-    <label for="logo">Logo da Empresa</label>
-    <input type="file" id="logo" name="logo">
-    
-    <label for="sobre">Sobre a Empresa</label>
-    <textarea id="sobre" name="sobre"><%= empresa.sobre || '' %></textarea>
-
-    <label for="twitter">Twitter</label>
-    <input type="text" id="twitter" name="twitter" value="<%= empresa.twitter || '' %>">
-    
-    <label for="instagram">Instagram</label>
-    <input type="text" id="instagram" name="instagram" value="<%= empresa.instagram || '' %>">
-
-    <label for="facebook">Facebook</label>
-    <input type="text" id="facebook" name="facebook" value="<%= empresa.facebook || '' %>">
-
-    <label for="linkedin">LinkedIn</label>
-    <input type="text" id="linkedin" name="linkedin" value="<%= empresa.linkedin || '' %>">
-
-    <label for="whatsapp">WhatsApp</label>
-    <input type="text" id="whatsapp" name="whatsapp" value="<%= empresa.whatsapp || '' %>">
-
-    <button type="submit">Salvar</button>
-  </form>
-</div>
-<%- include('../partials/footer') %>
+  </div>
+  <%- include('../partials/footer') %>

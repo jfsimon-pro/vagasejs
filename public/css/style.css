@@ -253,7 +253,6 @@ justify-content: center;
 .opcoes a {
   text-decoration: none;
   padding: 10px;
-  border-radius: 12px;
   background: #F78E0F;
   color: white;
 }
@@ -539,6 +538,53 @@ justify-content: center;
 }
 .content-candidatos-vaga strong {
   font-weight: bold;
+}
+.linha {
+  height: 1px;
+  width: 100%;
+  background-color: black;
+  margin-top: 20px;
+  margin-bottom: 35px;
+}
+
+.main-vagas ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.main-vagas h2 {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.content-main-login label {
+  color: white;
+}
+.content-main-login select {
+  height: 40px;
+}
+#idiomas {
+  height: 80px;
+}
+#beneficios {
+  height: 100px;
+}
+.separador-campos {
+  display: flex;
+  flex-direction: column;
+}
+#logo {
+  color: white;
+}
+.pagination {
+  text-align: center;
+  padding-top: 80px;
+}
+.pagination a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
 }
 @media (max-width: 768px) {
   .img-logo {

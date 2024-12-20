@@ -1,11 +1,15 @@
-<%- include('../partials/header') %>
-<section class="candidato-superior">
-  <div class="main-dashboard-candidato">
-    <div class="cabecalho-candidato">
-      <h1>Lance seus cursos, <%= candidato.nomeCompleto %>!</h1>
-      <a href="/candidato/dashboard/">Voltar</a>
-    </div>
-  
-</section>
+<%- include('./header') %>
 
-<%- include('../partials/footer') %>
+  <section class="candidato-superior">
+    <div class="main-login">
+      <div class="content-main-login">
+        <div class="main-dashboard-candidato">
+          <div class="cabecalho-candidato">
+            <h1>Lance seus cursos, <%= candidato.nomeCompleto %>!</h1>
+            <a href="/candidato/dashboard/">Voltar</a>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <%- include('../partials/footer') %>

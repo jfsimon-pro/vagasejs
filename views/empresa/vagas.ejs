@@ -1,50 +1,60 @@
 <!-- views/empresa/vagas.ejs -->
-<%- include('../partials/header') %>
-  <div class="pai-vagas">
-      <div class="main-vagas">
-        <div class="vagas-cabecalho">
-          <h1>Vagas Criadas</h1>
-          <div class="btn-vagas-criadas">
-            <a href="/empresa/vagas/criar">Criar Nova Vaga</a>
-            <a href="/empresa/dashboard">Voltar para o Dashboard</a>
-          </div>
-        </div>
-    
-      <ul>
-        <% if (vagas.length === 0) { %>
-          <p>Nenhuma vaga criada.</p>
-        <% } else { %>
-          <% vagas.forEach(vaga => { %>
-            <li>
-              <h2><%= vaga.titulo %></h2>
-              <p><strong>Descrição:</strong></p>
-              <p class="vaga-descrita"><%= vaga.descricao %></p>
-              <p><strong>Faixa Salarial:</strong> <%= vaga.faixaSalarial %></p>
-              <p><strong>Cargo/Função:</strong> <%= vaga.cargo %></p>
-              <p><strong>Tipo de Contrato:</strong> <%= vaga.tipoContrato %></p>
-              <p><strong>Disponibilidade:</strong> <%= vaga.disponibilidade || 'Não especificado' %></p>
-              <p><strong>Horário de Trabalho:</strong> <%= vaga.horarioTrabalho || 'Não especificado' %></p>
-              <p><strong>Tipo de Trabalho:</strong> <%= vaga.tipoTrabalho %></p>
-              <p><strong>Escolaridade:</strong> <%= vaga.escolaridade %></p>
-              <p><strong>Idiomas:</strong> <%= vaga.idiomas.length > 0 ? vaga.idiomas.join(', ') : 'Não especificado' %></p>
-              <p><strong>Benefícios:</strong> <%= vaga.beneficios.length > 0 ? vaga.beneficios.join(', ') : 'Não especificado' %></p>
-              <p><strong>Tags:</strong> <%= vaga.tags.length > 0 ? vaga.tags.join(', ') : 'Não especificado' %></p>
-
-    
-              <div class="botoes-gerenciar-vagas">
-                
-                <a href="/empresa/vagas/<%= vaga.id %>/candidatos">Ver Candidatos</a>
-                <form action="/empresa/vagas/excluir/<%= vaga.id %>" method="POST">
-                  <button type="submit">Excluir</button>
-                </form>
-
-              </div>
-            </li>
-          <% }) %>
-        <% } %>
-      </ul>
-    
-      
+<%- include('./header') %>
+<div class="pai-vagas">
+  <div class="main-vagas">
+    <div class="vagas-cabecalho">
+      <h1>Vagas Criadas</h1>
+      <div class="btn-vagas-criadas">
+        <a href="/empresa/vagas/criar">Criar Nova Vaga</a>
+        <a href="/empresa/dashboard">Voltar para o Dashboard</a>
       </div>
+    </div>
+
+    <ul>
+      <% if (vagas.length === 0) { %>
+        <p>Nenhuma vaga criada.</p>
+      <% } else { %>
+        <% vagas.forEach(vaga => { %>
+          <li>
+            <h2><%= vaga.titulo %></h2>
+            <p><strong>Descrição:</strong></p>
+            <p class="vaga-descrita"><%= vaga.descricao %></p>
+            <p><strong>Faixa Salarial:</strong> <%= vaga.faixaSalarial %></p>
+            <p><strong>Cargo/Função:</strong> <%= vaga.cargo %></p>
+            <p><strong>Tipo de Contrato:</strong> <%= vaga.tipoContrato %></p>
+            <p><strong>Disponibilidade:</strong> <%= vaga.disponibilidade || 'Não especificado' %></p>
+            <p><strong>Horário de Trabalho:</strong> <%= vaga.horarioTrabalho || 'Não especificado' %></p>
+            <p><strong>Tipo de Trabalho:</strong> <%= vaga.tipoTrabalho %></p>
+            <p><strong>Escolaridade:</strong> <%= vaga.escolaridade %></p>
+            <p><strong>Idiomas:</strong> <%= vaga.idiomas.length > 0 ? vaga.idiomas.join(', ') : 'Não especificado' %></p>
+            <p><strong>Benefícios:</strong> <%= vaga.beneficios.length > 0 ? vaga.beneficios.join(', ') : 'Não especificado' %></p>
+            <p><strong>Tags:</strong> <%= vaga.tags.length > 0 ? vaga.tags.join(', ') : 'Não especificado' %></p>
+
+            <div class="botoes-gerenciar-vagas">
+              <a href="/empresa/vagas/<%= vaga.id %>/candidatos">Ver Candidatos</a>
+              <form action="/empresa/vagas/excluir/<%= vaga.id %>" method="POST">
+                <button type="submit">Excluir</button>
+              </form>
+            </div>
+          </li>
+        <% }) %>
+      <% } %>
+    </ul>
+
+    <!-- Paginação -->
+    <nav class="pagination">
+      <% if (currentPage > 1) { %>
+        <a href="/empresa/vagas?page=<%= currentPage - 1 %>">Anterior</a>
+      <% } %>
+
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <a href="/empresa/vagas?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+      <% } %>
+
+      <% if (currentPage < totalPages) { %>
+        <a href="/empresa/vagas?page=<%= currentPage + 1 %>">Próxima</a>
+      <% } %>
+    </nav>
   </div>
-  <%- include('../partials/footer') %>
+</div>
+<%- include('../partials/footer') %>

@@ -1,50 +1,93 @@
-<%- include('../partials/header') %>
+<%- include('./header') %>
+<style>
+  .main-dashboard-candidato h1 {
+    color: white;
+    font-size: 30px;
+    margin-bottom: 25px;
+  }
+
+  .content-main-login form {
+    width: 100%;
+  }
+  .main-dashboard-candidato  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .main-dashboard-candidato li {
+    background: white;
+    padding: 10px;
+  }
+  .excl {
+    font-size: 14px !important;
+    background: red !important;
+    width: 100%;
+  }
+  .main-dashboard-candidato h2 {
+    color: white;
+  font-size: 30px;
+  margin: 25px 0px;
+  }
+  .main-dashboard-candidato strong {
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+</style>
   <section class="candidato-superior">
-    <div class="main-dashboard-candidato">
-      <h1>Lançar Nova Experiência Profissional</h1>
+    <div class="main-login">
+      <div class="content-main-login">
+        <div class="main-dashboard-candidato">
+          <h1>Lançar Nova Experiência Profissional</h1>
 
-      <form action="/candidato/lancar-experiencia" method="POST">
-        <label for="empresa">Empresa:</label>
-        <input type="text" id="empresa" name="empresa" required>
+          <form action="/candidato/lancar-experiencia" method="POST">
+            <label for="empresa">Empresa:</label>
+            <input type="text" id="empresa" name="empresa" required>
 
-        <label for="cargo">Cargo:</label>
-        <input type="text" id="cargo" name="cargo" required>
+            <label for="cargo">Cargo:</label>
+            <input type="text" id="cargo" name="cargo" required>
 
-        <label for="funcao">Função:</label>
-        <input type="text" id="funcao" name="funcao" required>
+            <label for="funcao">Função:</label>
+            <input type="text" id="funcao" name="funcao" required>
 
-        <label for="dataEntrada">Data de Entrada:</label>
-        <input type="date" id="dataEntrada" name="dataEntrada" required>
+            <label for="dataEntrada">Data de Entrada:</label>
+            <input type="date" id="dataEntrada" name="dataEntrada" required>
 
-        <label for="dataSaida">Data de Saída:</label>
-        <input type="date" id="dataSaida" name="dataSaida">
+            <label for="dataSaida">Data de Saída:</label>
+            <input type="date" id="dataSaida" name="dataSaida">
 
-        <label for="motivo">Motivo da Saída:</label>
-        <textarea id="motivo" name="motivo"></textarea>
+            <label for="motivo">Motivo da Saída:</label>
+            <textarea id="motivo" name="motivo"></textarea>
 
-        <button type="submit">Salvar Experiência</button>
-      </form>
+            <button type="submit">Salvar Experiência</button>
+          </form>
 
-      <h2>Minhas Experiências Profissionais</h2>
-<ul>
-  <% if (experiencias.length > 0) { %>
-    <% experiencias.forEach(experiencia => { %>
-      <li>
-        <strong><%= experiencia.cargo %></strong> - <%= experiencia.empresa %>
-        (<%= experiencia.dataEntrada.toLocaleDateString() %> a 
-        <%= experiencia.dataSaida ? experiencia.dataSaida.toLocaleDateString() : 'Atual' %>)
-        <br>Motivo da saída: <%= experiencia.motivo || 'Não especificado' %>
-        <form action="/candidato/lancar-experiencia/excluir/<%= experiencia.id %>" method="POST" style="display: inline;">
-          <button type="submit" onclick="return confirm('Tem certeza que deseja excluir esta experiência?')">Excluir</button>
-        </form>
-      </li>
-    <% }) %>
-  <% } else { %>
-    <p>Você ainda não listou nenhuma experiência profissional.</p>
-  <% } %>
-</ul>
+          <h2>Minhas Experiências Profissionais</h2>
+          <ul>
+            <% if (experiencias.length> 0) { %>
+              <% experiencias.forEach(experiencia=> { %>
+                <li>
+                  <strong>
+                    <%= experiencia.cargo %>
+                  </strong> - <%= experiencia.empresa %>
+                    (<%= experiencia.dataEntrada.toLocaleDateString() %> a
+                      <%= experiencia.dataSaida ? experiencia.dataSaida.toLocaleDateString() : 'Atual' %>)
+                        <br><br><strong>Motivo da saída:</strong> <%= experiencia.motivo || 'Não especificado' %>
+                        <br><br>
+                          <form action="/candidato/lancar-experiencia/excluir/<%= experiencia.id %>" method="POST"
+                            style="display: inline;">
+                            <button class="excl" type="submit"
+                              onclick="return confirm('Tem certeza que deseja excluir esta experiência?')">Excluir</button>
+                          </form>
+                </li>
+                <% }) %>
+                  <% } else { %>
+                    <p>Você ainda não listou nenhuma experiência profissional.</p>
+                    <% } %>
+          </ul>
 
+        </div>
+      </div>
     </div>
   </section>
 
-<%- include('../partials/footer') %>
+  <%- include('../partials/footer') %>
