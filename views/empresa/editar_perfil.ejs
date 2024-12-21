@@ -21,24 +21,65 @@
                 <textarea id="sobre" name="sobre"><%= empresa.sobre || '' %></textarea>
               </div>
               <div class="separador-campos">
-                <label for="twitter">Twitter</label>
-                <input type="text" id="twitter" name="twitter" value="<%= empresa.twitter || '' %>">
+                <label for="twitter">Twitter:</label>
+                <input
+                  type="url"
+                  id="twitter"
+                  name="twitter"
+                  placeholder="URL do Twitter ou X"
+                  pattern="https?://(www\.)?(twitter\.com|x\.com)/.+"
+                  title="A URL deve ser do Twitter (https://twitter.com) ou X (https://x.com)."
+                  value="<%= empresa.twitter || '' %>"
+                >
               </div>
               <div class="separador-campos">
-                <label for="instagram">Instagram</label>
-                <input type="text" id="instagram" name="instagram" value="<%= empresa.instagram || '' %>">
+               
+                <label for="instagram">Instagram:</label>
+                <input
+                  type="url"
+                  id="instagram"
+                  name="instagram"
+                  placeholder="URL do Instagram"
+                  pattern="https?://(www\.)?instagram\.com/.+"
+                  title="A URL deve ser do Instagram (https://instagram.com)."
+                  value="<%= empresa.instagram || '' %>"
+                >
               </div>
               <div class="separador-campos">
-                <label for="facebook">Facebook</label>
-                <input type="text" id="facebook" name="facebook" value="<%= empresa.facebook || '' %>">
+                <label for="facebook">Facebook:</label>
+                <input
+                  type="url"
+                  id="facebook"
+                  name="facebook"
+                  placeholder="URL do Facebook"
+                  pattern="https?://(www\.)?facebook\.com/.+"
+                  title="A URL deve ser do Facebook (https://facebook.com)."
+                  value="<%= empresa.facebook || '' %>"
+                >
               </div>
               <div class="separador-campos">
-                <label for="linkedin">LinkedIn</label>
-                <input type="text" id="linkedin" name="linkedin" value="<%= empresa.linkedin || '' %>">
+                <label for="linkedin">LinkedIn:</label>
+                <input
+                  type="url"
+                  id="linkedin"
+                  name="linkedin"
+                  placeholder="URL do LinkedIn"
+                  pattern="https?://(www\.)?linkedin\.com/.+"
+                  title="A URL deve ser do LinkedIn (https://linkedin.com)."
+                  value="<%= empresa.linkedin || '' %>"
+                >
               </div>
               <div class="separador-campos">
-                <label for="whatsapp">WhatsApp</label>
-                <input type="text" id="whatsapp" name="whatsapp" value="<%= empresa.whatsapp || '' %>">
+                <label for="whatsapp">WhatsApp:</label>
+                <input
+                  type="text"
+                  id="whatsapp"
+                  name="whatsapp"
+                  placeholder="Exemplo: 11999999999"
+                  pattern="\d{9,15}"
+                  title="Digite apenas números com o código do país e DDD. Exemplo: 11999999999"
+                  value="<%= empresa.whatsapp || '' %>"
+                >
               </div>
               <button type="submit">Salvar</button>
             </form>

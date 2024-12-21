@@ -440,6 +440,10 @@ router.get('/editar-perfil', verifyToken, async (req, res) => {
     res.status(500).send('Erro ao carregar a página de edição.');
   }
 });
+
+
+
+
 router.post(
   '/editar-perfil',
   verifyToken,
@@ -461,8 +465,44 @@ router.post(
       next();
     });
   },
+  [
+    body('twitter')
+      .optional({ checkFalsy: true }) // Permite valores vazios ou ausentes
+      .isURL()
+      .matches(/^https?:\/\/(www\.)?(twitter\.com|x\.com)\/.+$/)
+      .withMessage('A URL do Twitter ou X deve ser válida.'),
+    body('instagram')
+      .optional({ checkFalsy: true })
+      .isURL()
+      .matches(/^https?:\/\/(www\.)?instagram\.com\/.+$/)
+      .withMessage('A URL do Instagram deve ser válida.'),
+    body('facebook')
+      .optional({ checkFalsy: true })
+      .isURL()
+      .matches(/^https?:\/\/(www\.)?facebook\.com\/.+$/)
+      .withMessage('A URL do Facebook deve ser válida.'),
+    body('linkedin')
+      .optional({ checkFalsy: true })
+      .isURL()
+      .matches(/^https?:\/\/(www\.)?linkedin\.com\/.+$/)
+      .withMessage('A URL do LinkedIn deve ser válida.'),
+    body('whatsapp')
+      .optional({ checkFalsy: true })
+      .isNumeric()
+      .withMessage('O WhatsApp deve conter apenas números.')
+      .isLength({ min: 9, max: 15 })
+      .withMessage('O WhatsApp deve ter entre 9 e 15 dígitos.'),
+  ],
   async (req, res) => {
     const { sobre, twitter, instagram, facebook, linkedin, whatsapp } = req.body;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render('empresa/editar_perfil', {
+        empresa: req.body,
+        error: errors.array().map(err => err.msg).join(', '),
+      });
+    }
 
     try {
       // Buscar a empresa no banco de dados para obter a logo existente
@@ -491,11 +531,11 @@ router.post(
         data: {
           logo,
           sobre,
-          twitter,
-          instagram,
-          facebook,
-          linkedin,
-          whatsapp,
+          twitter: twitter || null, // Salva como null se estiver vazio
+          instagram: instagram || null,
+          facebook: facebook || null,
+          linkedin: linkedin || null,
+          whatsapp: whatsapp || null,
         },
       });
 
@@ -509,6 +549,7 @@ router.post(
     }
   }
 );
+
 
 
 
@@ -582,7 +623,7 @@ router.get('/perfil/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    console.log(`Acessando a rota de perfil da empresa com ID: ${id}`);
+    
 
     const empresa = await prisma.empresa.findUnique({
       where: { id },

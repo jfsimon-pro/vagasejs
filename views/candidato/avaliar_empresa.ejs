@@ -1,14 +1,19 @@
 <%- include('./header') %>
-<div class="main-avaliar">
-  <h1>Avaliar Empresa: <%= empresa.nomeFantasia %></h1>
-  <form action="/candidato/vagas/<%= vagaId %>/avaliar" method="POST">
-    <label for="nota">Nota (0 a 5):</label>
-    <input type="number" id="nota" name="nota" min="0" max="5" required>
-    
-    <label for="comentario">Comentário:</label>
-    <textarea id="comentario" name="comentario" rows="4" placeholder="Deixe seu feedback" required></textarea>
-    
-    <button type="submit">Enviar Avaliação</button>
-  </form>
-</div>
-<%- include('../partials/footer') %>
+  <div class="main-login">
+    <div class="content-main-login">
+      <div class="main-avaliar">
+        <h1>Avaliar Empresa: <%= empresa.nomeFantasia %>
+        </h1>
+        <form action="/candidato/vagas/<%= vagaId %>/avaliar" method="POST">
+          <label for="nota">Nota (0 a 5):</label>
+          <input type="number" id="nota" name="nota" min="0" max="5" required>
+
+          <label for="comentario">Comentário:</label>
+          <textarea id="comentario" name="comentario" rows="4" placeholder="Deixe seu feedback" required></textarea>
+
+          <button type="submit">Enviar Avaliação</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <%- include('../partials/footer') %>

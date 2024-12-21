@@ -1,31 +1,122 @@
-<%- include('./header') %>
-<div class="perfil-empresa">
-  <h1><%= empresa.nomeFantasia %></h1>
-  <% if (empresa.logo) { %>
-    <img src="/uploads/<%= empresa.logo %>" alt="Logo da Empresa" style="max-width: 150px;">
-  <% } %>
+<%- include('../candidato/header') %>
+  <style>
+    .content-main-login {
+      background: white;
+    }
+    .perfil-empresa h1 {
+      color: black;
+      font-weight: bold;
+      font-size: 30px;
+      text-transform: capitalize;
+    }
 
-  <p><strong>Razão Social:</strong> <%= empresa.razaoSocial %></p>
-  <p><strong>Endereço:</strong> <%= empresa.logradouro %>, <%= empresa.numero %>, <%= empresa.complemento %>, <%= empresa.bairro %>, <%= empresa.cidade %> - <%= empresa.uf %></p>
-  <p><strong>Telefone:</strong> <%= empresa.telefone %></p>
-  <p><strong>WhatsApp:</strong> <%= empresa.whatsapp %></p>
-  
-  <% if (empresa.sobre) { %>
-    <p><strong>Sobre a empresa:</strong> <%= empresa.sobre %></p>
-  <% } %>
+    .perfil-empresa strong {
+      font-weight: bold;
+    }
 
-  <h2>Avaliações</h2>
-  <p><strong>Nota Média:</strong> <%= notaMedia %> de 5</p>
+    .perfil-redes-sociais img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+    }
 
-  <% if (empresa.twitter || empresa.instagram || empresa.facebook || empresa.linkedin) { %>
-    <h3>Redes Sociais</h3>
-    <ul>
-      <% if (empresa.twitter) { %> <li>Twitter: <a href="<%= empresa.twitter %>" target="_blank"><%= empresa.twitter %></a></li> <% } %>
-      <% if (empresa.instagram) { %> <li>Instagram: <a href="<%= empresa.instagram %>" target="_blank"><%= empresa.instagram %></a></li> <% } %>
-      <% if (empresa.facebook) { %> <li>Facebook: <a href="<%= empresa.facebook %>" target="_blank"><%= empresa.facebook %></a></li> <% } %>
-      <% if (empresa.linkedin) { %> <li>LinkedIn: <a href="<%= empresa.linkedin %>" target="_blank"><%= empresa.linkedin %></a></li> <% } %>
-    </ul>
-  <% } %>
-</div>
+    .perfil-redes-sociais ul {
+      display: flex;
+      gap: 12px;
+    }
+    .dados-perfil-empresa p {
+      margin-bottom: 12px;
+      line-height: 20px;
+    }
+    .perfil-redes-sociais h3 {
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+    .perfil-redes-sociais {
+      margin: 15px 0px;
+    }
+  </style>
+  <section class="section-perfil-empresa">
+    <div class="main-login">
+    
+      <div class="content-main-login">
 
-<%- include('../partials/footer') %>
+        <div class="perfil-empresa">
+
+          <div class="grafico-empresa">
+            <% if (empresa.logo) { %>
+              <img src="/<%= empresa.logo %>" alt="Logo da empresa" style="max-width: 400px; max-height: 400px;">
+              <% } else { %>
+                <p>Sem logo disponível</p>
+                <% } %>
+                  <h1>
+                    <%= empresa.nomeFantasia %>
+                  </h1>
+                  <p><strong>Nota Média:</strong>
+                    <%= notaMedia %>/5
+                  </p>
+                  <div class="perfil-redes-sociais">
+                    <% if (empresa.twitter || empresa.instagram || empresa.facebook || empresa.linkedin) { %>
+                      <h3>Redes Sociais:</h3>
+                      <ul>
+                        <% if (empresa.twitter) { %>
+                          <li><a href="<%= empresa.twitter %>" target="_blank">
+                              <img src="/img/twitter.png">
+                            </a></li>
+                          <% } %>
+                            <% if (empresa.instagram) { %>
+                              <li><a href="<%= empresa.instagram %>" target="_blank">
+                                  <img src="/img/instagram.png">
+                                </a></li>
+                              <% } %>
+                                <% if (empresa.facebook) { %>
+                                  <li><a href="<%= empresa.facebook %>" target="_blank">
+                                      <img src="/img/facebook.png">
+                                    </a></li>
+                                  <% } %>
+                                    <% if (empresa.whatsapp) { %>
+                                      <li><a href="https://wa.me/55<%= empresa.whatsapp %>" target="_blank">
+                                          <img src="/img/whatsapp.png">
+                                        </a></li>
+                                      <% } %>
+                                        <% if (empresa.linkedin) { %>
+                                          <li><a href="<%= empresa.linkedin %>" target="_blank">
+                                              <img src="/img/linkedin.png">
+                                            </a></li>
+                                          <% } %>
+                      </ul>
+                      <% } %>
+                  </div>
+          </div>
+
+          <div class="dados-perfil-empresa">
+            <p><strong>Razão Social:</strong>
+              <%= empresa.razaoSocial %>
+            </p>
+            <p><strong>Endereço:</strong>
+              <%= empresa.logradouro %>, <%= empresa.numero %>, <%= empresa.complemento %>, <%= empresa.bairro %>, <%=
+                        empresa.cidade %> - <%= empresa.uf %>
+            </p>
+            <p><strong>Telefone:</strong>
+              <%= empresa.telefone %>
+            </p>
+            <p><strong>WhatsApp:</strong>
+              <%= empresa.whatsapp %>
+            </p>
+          </div>
+
+          <% if (empresa.sobre) { %>
+            <p><strong>Sobre a empresa:</strong>
+              <%= empresa.sobre %>
+            </p>
+            <% } %>
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+  </section>
+  <%- include('../partials/footer') %>

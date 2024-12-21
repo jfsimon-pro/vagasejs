@@ -1,0 +1,149 @@
+<%- include('./header') %>
+    <style>
+        .editar-dados {
+            margin-bottom: 12px;
+        }
+
+        .vagas-disponiveis h2 {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .vagas-disponiveis input {
+            width: 80%;
+            padding: 10px;
+        }
+
+        .vagas-disponiveis button {
+            background: #F78E0F;
+            color: white;
+            border: none;
+            font-size: 16px;
+            padding: 10px 20px;
+        }
+
+        .pagination {
+            display: flex;
+            text-align: center;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .listavagas {
+            background: white;
+            padding: 20px;
+            display: flex;
+            gap: 50px;
+            justify-content: space-between;
+            flex-direction: column;
+        }
+
+        .listavagas h3 {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .listavagas strong {
+            font-weight: bold;
+        }
+
+        .listavagas li p {
+            margin-bottom: 7px;
+        }
+
+        .vagas-candidatadas h2 {
+            color: white;
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 25px;
+        }
+
+        .vagas-candidatadas li {
+            background: white;
+            padding: 20px;
+        }
+
+        .vagas-candidatadas ul {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .vagas-candidatadas h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .vagas-candidatadas strong {
+            font-weight: bold;
+        }
+
+        .vagas-candidatadas p {
+            margin-bottom: 10px;
+        }
+
+        .vagas-aprovadas li {
+            background-color: white;
+            padding: 20px;
+        }
+
+        .vagas-aprovadas h2 {
+            color: white;
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 25px;
+            margin-top: 50px;
+        }
+
+        .vagas-aprovadas h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .vagas-aprovadas p {
+            margin-bottom: 10px;
+        }
+
+        .vagas-aprovadas strong {
+            font-weight: bold;
+        }
+
+        .vagas-aprovadas a {
+            color: black;
+        }
+    </style>
+    <section class="candidato-superior">
+        <div class="main-dashboard-candidato">
+            
+            <div class="vagas-candidatadas">
+                <h2>Vagas Candidatadas</h2>
+                <% if (vagasCandidatadas.length> 0) { %>
+                    <ul>
+                        <% vagasCandidatadas.forEach(vaga=> { %>
+                            <li>
+                                <h3>
+                                    <%= vaga.titulo %>
+                                </h3>
+                                <p><strong>Descrição:</strong>
+                                    <%= vaga.descricao %>
+                                </p>
+                                <p><strong>Faixa Salarial:</strong>
+                                    <%= vaga.faixaSalarial %>
+                                </p>
+                            </li>
+                            <% }); %>
+                    </ul>
+                    <% } else { %>
+                        <p>Você ainda não se candidatou a nenhuma vaga.</p>
+                        <% } %>
+            </div>
+        </div>
+    </section>
+<%- include('../partials/footer') %>

@@ -1,203 +1,208 @@
 <%- include('./header') %>
-<style>
-  .editar-dados {
-    margin-bottom: 12px;
-  }
-  .vagas-disponiveis h2 {
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
-  .vagas-disponiveis input {
-    width: 80%;
-    padding: 10px;
-  }
-  .vagas-disponiveis button {
-    background: #F78E0F;
+  <style>
+    .editar-dados {
+      margin-bottom: 12px;
+    }
+
+    .vagas-disponiveis h2 {
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .vagas-disponiveis input {
+      width: 80%;
+      padding: 10px;
+    }
+
+    .vagas-disponiveis button {
+      background: #F78E0F;
+      color: white;
+      border: none;
+      font-size: 16px;
+      padding: 10px 20px;
+    }
+
+    .pagination {
+      display: flex;
+      text-align: center;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .listavagas {
+      background: white;
+      padding: 20px;
+      display: flex;
+      gap: 50px;
+      justify-content: space-between;
+      flex-direction: column;
+    }
+
+    .listavagas h3 {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .listavagas strong {
+      font-weight: bold;
+    }
+
+    .listavagas li p {
+      margin-bottom: 7px;
+    }
+
+    .vagas-candidatadas h2 {
+      color: white;
+      font-weight: bold;
+      font-size: 30px;
+      margin-bottom: 25px;
+    }
+
+    .vagas-candidatadas li {
+      background: white;
+      padding: 20px;
+    }
+
+    .vagas-candidatadas ul {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .vagas-candidatadas h3 {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .vagas-candidatadas strong {
+      font-weight: bold;
+    }
+
+    .vagas-candidatadas p {
+      margin-bottom: 10px;
+    }
+
+    .vagas-aprovadas li {
+      background-color: white;
+      padding: 20px;
+    }
+
+    .vagas-aprovadas h2 {
+      color: white;
+      font-weight: bold;
+      font-size: 30px;
+      margin-bottom: 25px;
+      margin-top: 50px;
+    }
+
+    .vagas-aprovadas h3 {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .vagas-aprovadas p {
+      margin-bottom: 10px;
+    }
+
+    .vagas-aprovadas strong {
+      font-weight: bold;
+    }
+
+    .vagas-aprovadas a {
+      color: black;
+    }
+    .lancar-cursos {
+      margin: 35px 0px;
+
+    }
+    .lancar-cursos a, .vagas-aprovadas a {
+      background: #F78E0F;
     color: white;
     border: none;
     font-size: 16px;
     padding: 10px 20px;
-  }
-  .pagination {
-    display: flex;
-    text-align: center;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-  }
-  .listavagas {
-    background: white;
-    padding: 20px;
-    display: flex;
-    gap: 50px;
-    justify-content: space-between;
-    flex-direction: column;
-  }
-  .listavagas h3 {
-    font-weight: bold;
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  .listavagas strong {
-    font-weight: bold;
-  }
-  .listavagas li p {
-    margin-bottom: 7px;
-  }
-  .vagas-candidatadas h2 {
-    color: white;
-    font-weight: bold;
-    font-size: 30px;
-    margin-bottom: 25px;
-  }
-  .vagas-candidatadas li {
-    background: white;
-    padding: 20px;
-  }
-  .vagas-candidatadas ul {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-  }
-  .vagas-candidatadas h3 {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 12px;
-  }
-  .vagas-candidatadas strong {
-    font-weight: bold;
-  }
-  .vagas-candidatadas p {
-    margin-bottom: 10px;
-  }
-  .vagas-aprovadas li {
-    background-color: white;
-    padding: 20px;
-  }
-  .vagas-aprovadas h2 {
-    color: white;
-    font-weight: bold;
-    font-size: 30px;
-    margin-bottom: 25px;
-    margin-top: 50px;
-  }
-  .vagas-aprovadas h3 {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 12px;
-  }
-  .vagas-aprovadas p {
-    margin-bottom: 10px;
-  }
-  .vagas-aprovadas strong {
-    font-weight: bold;
-  }
-  .vagas-aprovadas a {
-    color: black;
-  }
-</style>
-<section class="candidato-superior">
-  <div class="main-dashboard-candidato">
-    <div class="cabecalho-candidato">
-      <h1>Bem-vindo, <%= candidato.nomeCompleto %>!</h1>
-    </div>
-    <div class="meus-dados">
-      <div class="editar-dados">
-        <a href="/candidato/editar-dados">Editar Meus Dados</a>
+    text-decoration: none;
+    }
+    .dashboard-buttons a {
+      background-color: #F7AD0F;
+      color: white;
+    border: none;
+    font-size: 16px;
+    padding: 10px 20px;
+    text-decoration: none;
+    }
+    .buttons-aprovado {
+      margin-top: 25px;
+    }
+  </style>
+  <section class="candidato-superior">
+    <div class="main-dashboard-candidato">
+      <div class="cabecalho-candidato">
+        <h1>Bem-vindo, <%= candidato.nomeCompleto %>!</h1>
+      </div>
+      <div class="meus-dados">
+        <div class="editar-dados">
+          <a href="/candidato/editar-dados">Editar Meus Dados</a>
+        </div>
+
+        <p><strong>CPF:</strong>
+          <%= candidato.cpf %>
+        </p>
+        <p><strong>E-mail:</strong>
+          <%= candidato.email %>
+        </p>
+        <p><strong>Telefone:</strong>
+          <%= candidato.telefone %>
+        </p>
+        <p><strong>Endereço:</strong>
+          <%= candidato.logradouro %>, <%= candidato.complemento %>, <%= candidato.numero %>, <%= candidato.bairro %> -
+                  <%= candidato.cep %>, <%= candidato.cidade %> / <%= candidato.uf %>
+        </p>
+        <p><strong>Currículo:</strong> <a href="/uploads/<%= candidato.curriculo.split('/').pop() %>"
+            target="_blank">Visualizar Currículo</a></p>
+        <div class="lancar-cursos">
+          <a href="/candidato/lancar-experiencia">Lançar Experiência</a>
+          <a href="/candidato/lancar-curso">Lançar Curso</a>
+        </div>
+        <div class="dashboard-buttons">
+          <a href="/candidato/vagas" class="btn btn-primary">Vagas Disponíveis</a>
+          <a href="/candidato/vagas-candidatadas" class="btn btn-secondary">Minhas Candidaturas</a>
+        </div>
+      </div>
+
+      
+      <div class="vagas-aprovadas">
+        <h2>Vagas em que você foi aprovado</h2>
+        <% if (vagasAprovadas.length > 0) { %>
+          <ul>
+            <% vagasAprovadas.forEach(vaga => { %>
+              <li>
+                <h3><%= vaga.titulo %></h3>
+                <p><strong>Faixa Salarial:</strong> <%= vaga.faixaSalarial %></p>
+                <p><strong>Empresa:</strong> <%= vaga.empresa.nomeFantasia %></p>
+                <div class="buttons-aprovado">
+                  <a href="/empresa/perfil/<%= vaga.empresa.id %>" class="btn btn-info">Ver perfil da empresa</a>
+                  <% if (vaga.jaAvaliada) { %>
+                    <button disabled class="btn btn-secondary">Avaliação enviada</button>
+                  <% } else { %>
+                    <a href="/candidato/vagas/<%= vaga.id %>/avaliar" class="btn btn-success">Avaliar Empresa</a>
+                  <% } %>
+                </div>
+              </li>
+            <% }); %>
+          </ul>
+        <% } else { %>
+          <p>Você ainda não foi aprovado em nenhuma vaga.</p>
+        <% } %>
       </div>
       
-      <p><strong>CPF:</strong> <%= candidato.cpf %></p>
-      <p><strong>E-mail:</strong> <%= candidato.email %></p>
-      <p><strong>Telefone:</strong> <%= candidato.telefone %></p>
-      <p><strong>Endereço:</strong> <%= candidato.logradouro %>, <%= candidato.complemento %>, <%= candidato.numero %>, <%= candidato.bairro %> - <%= candidato.cep %>, <%= candidato.cidade %> / <%= candidato.uf %></p>
-      <p><strong>Currículo:</strong> <a href="/uploads/<%= candidato.curriculo.split('/').pop() %>" target="_blank">Visualizar Currículo</a></p>
-      <div class="lancar-cursos">
-        <a href="/candidato/lancar-experiencia">Lançar Experiência</a>
-        <a href="/candidato/lancar-curso">Lançar Curso</a>
-      </div>      
     </div>
-
-    <div class="vagas-disponiveis">
-      <h2>Vagas Disponíveis</h2>
-      <form action="/candidato/dashboard" method="GET" style="margin-bottom: 20px;">
-        <input type="text" name="busca" placeholder="Buscar vagas..." value="<%= busca || '' %>">
-        <button type="submit">Buscar</button>
-      </form>
-
-      <% if (vagasDisponiveis.length > 0) { %>
-        <ul class="listavagas">
-          <% vagasDisponiveis.forEach(vaga => { %>
-            <li>
-              <h3><%= vaga.titulo %></h3>
-              <p><strong>Descrição:</strong> <%= vaga.descricao %></p>
-              <p><strong>Cargo/Função:</strong> <%= vaga.cargo %></p>
-              <p><strong>Salário:</strong> <%= vaga.faixaSalarial %></p>
-              <form action="/candidato/candidatar" method="POST">
-                <input type="hidden" name="vagaId" value="<%= vaga.id %>">
-                <button type="submit">Candidatar-se</button>
-              </form>
-            </li>
-          <% }); %>
-        </ul>
-
-        <nav>
-          <ul class="pagination">
-            <% for (let i = 1; i <= totalPages; i++) { %>
-              <li class="<%= i === currentPage ? 'active' : '' %>">
-                <a href="/candidato/dashboard?page=<%= i %>&busca=<%= busca %>"><%= i %></a>
-              </li>
-            <% } %>
-          </ul>
-        </nav>
-      <% } else { %>
-        <p>Nenhuma vaga disponível.</p>
-      <% } %>
-    </div>
-
-    <div class="vagas-candidatadas">
-      <h2>Vagas Candidatadas</h2>
-      <% if (vagasCandidatadas.length > 0) { %>
-        <ul>
-          <% vagasCandidatadas.forEach(vaga => { %>
-            <li>
-              <h3><%= vaga.titulo %></h3>
-              <p><strong>Descrição:</strong> <%= vaga.descricao %></p>
-              <p><strong>Faixa Salarial:</strong> <%= vaga.faixaSalarial %></p>
-            </li>
-          <% }); %>
-        </ul>
-      <% } else { %>
-        <p>Você ainda não se candidatou a nenhuma vaga.</p>
-      <% } %>
-    </div>
-
-    <div class="vagas-aprovadas">
-      <h2>Vagas em que você foi aprovado</h2>
-<% if (vagasAprovadas.length > 0) { %>
-  <ul>
-    <% vagasAprovadas.forEach(vaga => { %>
-      <li>
-        <h3><%= vaga.titulo %></h3>
-        <p><strong>Faixa Salarial:</strong> <%= vaga.faixaSalarial %></p>
-        <p><strong>Empresa:</strong> <%= vaga.empresa.nomeFantasia %></p>
-        <a href="/empresa/perfil/<%= vaga.empresa.id %>">Ver perfil da empresa</a>
-
-        <% if (vaga.jaAvaliada) { %>
-          <button disabled class="btn btn-secondary">Avaliação enviada</button>
-        <% } else { %>
-          <a href="/candidato/vagas/<%= vaga.id %>/avaliar" class="btn btn-primary">Avaliar Empresa</a>
-        <% } %>
-      </li>
-    <% }); %>
-  </ul>
-<% } else { %>
-  <p>Você ainda não foi aprovado em nenhuma vaga.</p>
-<% } %>
-
-    </div>
-  </div>
-</section>
-<%- include('../partials/footer') %>
+  </section>
+  <%- include('../partials/footer') %>

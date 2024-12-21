@@ -1,0 +1,168 @@
+<%- include('./header') %>
+    <style>
+        .editar-dados {
+            margin-bottom: 12px;
+        }
+
+        .vagas-disponiveis h2 {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .vagas-disponiveis input {
+            width: 87%;
+            padding: 10px;
+        }
+
+        .vagas-disponiveis button {
+            background: #F78E0F;
+            color: white;
+            border: none;
+            font-size: 16px;
+            padding: 10px 20px;
+        }
+
+        .pagination {
+            display: flex;
+            text-align: center;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .listavagas {
+            padding: 20px;
+            display: flex;
+            gap: 50px;
+            justify-content: space-between;
+            flex-direction: column;
+        }
+        .listavagas li {
+            background: white;
+            padding: 20px;
+        }
+        .listavagas h3 {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .listavagas strong {
+            font-weight: bold;
+        }
+        button {
+            cursor: pointer;
+        }
+        .listavagas li p {
+            margin-bottom: 7px;
+        }
+
+        .vagas-candidatadas h2 {
+            color: white;
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 25px;
+        }
+
+        .vagas-candidatadas li {
+            background: white;
+            padding: 20px;
+        }
+
+        .vagas-candidatadas ul {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .vagas-candidatadas h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .vagas-candidatadas strong {
+            font-weight: bold;
+        }
+
+        .vagas-candidatadas p {
+            margin-bottom: 10px;
+        }
+
+        .vagas-aprovadas li {
+            background-color: white;
+            padding: 20px;
+        }
+
+        .vagas-aprovadas h2 {
+            color: white;
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 25px;
+            margin-top: 50px;
+        }
+
+        .vagas-aprovadas h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .vagas-aprovadas p {
+            margin-bottom: 10px;
+        }
+
+        .vagas-aprovadas strong {
+            font-weight: bold;
+        }
+
+        .vagas-aprovadas a {
+            color: black;
+        }
+    </style>
+    <section class="candidato-superior">
+        <div class="main-dashboard-candidato">
+            <div class="vagas-disponiveis">
+                <h2>Vagas Disponíveis</h2>
+                <!-- Atualizamos o action para '/candidato/vagas' -->
+                <form action="/candidato/vagas" method="GET" style="margin-bottom: 20px;">
+                    <input type="text" name="busca" placeholder="Buscar vagas..." value="<%= busca || '' %>">
+                    <button type="submit">Buscar</button>
+                </form>
+    
+                <% if (vagasDisponiveis.length > 0) { %>
+                    <ul class="listavagas">
+                        <% vagasDisponiveis.forEach(vaga => { %>
+                            <li>
+                                <h3><%= vaga.titulo %></h3>
+                                <p><strong>Descrição:</strong> <%= vaga.descricao %></p>
+                                <p><strong>Cargo/Função:</strong> <%= vaga.cargo %></p>
+                                <p><strong>Salário:</strong> <%= vaga.faixaSalarial %></p>
+                                <form action="/candidato/candidatar" method="POST">
+                                    <input type="hidden" name="vagaId" value="<%= vaga.id %>">
+                                    <button type="submit">Candidatar-se</button>
+                                </form>
+                            </li>
+                        <% }); %>
+                    </ul>
+    
+                    <nav>
+                        <ul class="pagination">
+                            <% for (let i = 1; i <= totalPages; i++) { %>
+                                <li class="<%= i === currentPage ? 'active' : '' %>">
+                                    <a href="/candidato/vagas?page=<%= i %>&busca=<%= busca %>"><%= i %></a>
+                                </li>
+                            <% } %>
+                        </ul>
+                    </nav>
+                <% } else { %>
+                    <p>Nenhuma vaga disponível.</p>
+                <% } %>
+            </div>
+        </div>
+    </section>
+    
+<%- include('../partials/footer') %>
