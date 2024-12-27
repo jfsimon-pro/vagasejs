@@ -8,14 +8,14 @@
       <button type="submit">Entrar</button>
     </form>
   </div>
-
 </div>
 
-  <% if (errors.length > 0) { %>
-    <ul>
-      <% errors.forEach(error => { %>
-        <li><%= error.msg %></li>
-      <% }) %>
-    </ul>
+
+<div>
+  <% if (message) { %>
+    <p class="message"><%= message %></p>
   <% } %>
-  <%- include('../partials/footer') %>
+</div>
+
+
+<%- include('../partials/footer') %>

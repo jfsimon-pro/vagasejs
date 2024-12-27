@@ -1,19 +1,27 @@
 <%- include('../partials/header') %>
-  <div class="main-login">
-    <div class="content-main-login">
-      <h1>Login do Candidato</h1>
-      <form action="/auth/login_candidato" method="POST">
-        <input type="email" name="email" placeholder="E-mail" required>
-        <input type="password" name="senha" placeholder="Senha" required>
-        <button type="submit">Entrar</button>
-      </form>
-    </div>
+<div class="main-login">
+  <div class="content-main-login">
+    <h1>Área do Candidato</h1>
+    <form action="/auth/login_candidato" method="POST">
+      <input type="email" name="email" placeholder="E-mail" required>
+      <input type="password" name="senha" placeholder="Senha" required>
+      <button type="submit">Entrar</button>
+    </form>
   </div>
-  <% if (errors.length > 0) { %>
+</div>
+
+<div>
+  <% if (message) { %>
+    <p class="message"><%= message %></p>
+  <% } %>
+
+  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
     <ul>
       <% errors.forEach(error => { %>
         <li><%= error.msg %></li>
       <% }) %>
     </ul>
   <% } %>
-  <%- include('../partials/footer') %>
+</div>
+
+<%- include('../partials/footer') %>

@@ -76,14 +76,28 @@ router.get('/dashboard', verifyToken, async (req, res) => {
 });
 
 
-
-
 router.get('/vagas', verifyToken, async (req, res) => {
   const { busca, page = 1 } = req.query;
   const perPage = 3; // Quantidade de vagas por página
   const currentPage = parseInt(page, 10) || 1;
 
   try {
+    const candidato = await prisma.candidato.findUnique({
+      where: { id: req.user.userId },
+      include: {
+        candidaturas: {
+          select: { vagaId: true }, // Apenas o ID das vagas candidatas
+        },
+      },
+    });
+
+    if (!candidato) {
+      return res.status(404).send('Candidato não encontrado.');
+    }
+
+    // Lista de IDs das vagas que o candidato já se candidatou
+    const vagasCandidatadasIds = candidato.candidaturas.map(c => c.vagaId);
+
     const where = busca
       ? {
           OR: [
@@ -104,6 +118,7 @@ router.get('/vagas', verifyToken, async (req, res) => {
 
     res.render('candidato/vagas_disponiveis', {
       vagasDisponiveis,
+      vagasCandidatadasIds, // Passar as vagas candidatas para a view
       busca: busca || '',
       currentPage,
       totalPages: Math.ceil(totalVagas / perPage),
@@ -113,7 +128,6 @@ router.get('/vagas', verifyToken, async (req, res) => {
     res.status(500).send('Erro ao carregar vagas disponíveis.');
   }
 });
-
 
 
 router.get('/vagas-candidatadas', verifyToken, async (req, res) => {

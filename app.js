@@ -17,7 +17,7 @@ app.use(
       directives: {
         "default-src": ["'self'"],
         "script-src": ["'self'"],
-        "connect-src": ["'self'", "https://viacep.com.br", "https://api-publica.speedio.com.br"], // Permite conexões à API do ViaCEP
+        "connect-src": ["'self'", "https://viacep.com.br", "https://api-publica.speedio.com.br", "https://api.cnpjs.dev"], // Permite conexões à API do ViaCEP
         "style-src": ["'self'", "'unsafe-inline'"],
         "img-src": ["'self'"],
       },

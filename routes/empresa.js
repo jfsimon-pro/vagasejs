@@ -155,7 +155,7 @@ router.post(
     body('telefone').notEmpty().trim().escape().withMessage('Telefone é obrigatório.'),
     body('whatsapp').notEmpty().trim().escape().withMessage('WhatsApp é obrigatório.'),
     body('responsavel').notEmpty().trim().escape().withMessage('Nome do responsável é obrigatório.'),
-    body('email').isEmail().normalizeEmail().withMessage('E-mail inválido.'),
+    body('email').isEmail().withMessage('E-mail inválido.'),
   ],
   async (req, res) => {
     const errors = validationResult(req);

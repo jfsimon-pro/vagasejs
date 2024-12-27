@@ -33,6 +33,8 @@ model Empresa {
   logo           String? // Caminho da logo da empresa
   vagas          Vaga[]
   avaliacoes     Avaliacao[] // Relacionamento com Avaliacao
+  emailVerificado  Boolean  @default(false) // Campo adicionado
+  verificationToken String? // Token de verificação do email
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -56,6 +58,8 @@ model Candidato {
   cursos         Curso[]
   experienciasProfissionais ExperienciaProfissional[]
   avaliacoes     Avaliacao[] // Relacionamento com Avaliacao
+  emailVerificado   Boolean  @default(false)
+  verificationToken String?  // Token para verificar o e-mail
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }

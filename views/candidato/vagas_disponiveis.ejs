@@ -40,22 +40,26 @@
             justify-content: space-between;
             flex-direction: column;
         }
+
         .listavagas li {
             background: white;
             padding: 20px;
         }
+
         .listavagas h3 {
             font-weight: bold;
             font-size: 18px;
             margin-bottom: 10px;
         }
-        
+
         .listavagas strong {
             font-weight: bold;
         }
+
         button {
             cursor: pointer;
         }
+
         .listavagas li p {
             margin-bottom: 7px;
         }
@@ -122,47 +126,70 @@
         .vagas-aprovadas a {
             color: black;
         }
+
+        /* Estilo para o botão de candidatura já realizada */
+        .candidated {
+            background: red !important;
+            color: white;
+            border: none;
+            cursor: not-allowed;
+        }
     </style>
     <section class="candidato-superior">
         <div class="main-dashboard-candidato">
             <div class="vagas-disponiveis">
                 <h2>Vagas Disponíveis</h2>
-                <!-- Atualizamos o action para '/candidato/vagas' -->
                 <form action="/candidato/vagas" method="GET" style="margin-bottom: 20px;">
                     <input type="text" name="busca" placeholder="Buscar vagas..." value="<%= busca || '' %>">
                     <button type="submit">Buscar</button>
                 </form>
-    
-                <% if (vagasDisponiveis.length > 0) { %>
+
+                <% if (vagasDisponiveis.length> 0) { %>
                     <ul class="listavagas">
-                        <% vagasDisponiveis.forEach(vaga => { %>
+                        <% vagasDisponiveis.forEach(vaga=> { %>
                             <li>
-                                <h3><%= vaga.titulo %></h3>
-                                <p><strong>Descrição:</strong> <%= vaga.descricao %></p>
-                                <p><strong>Cargo/Função:</strong> <%= vaga.cargo %></p>
-                                <p><strong>Salário:</strong> <%= vaga.faixaSalarial %></p>
+                                <h3>
+                                    <%= vaga.titulo %>
+                                </h3>
+                                <p><strong>Descrição:</strong>
+                                    <%= vaga.descricao %>
+                                </p>
+                                <p><strong>Cargo/Função:</strong>
+                                    <%= vaga.cargo %>
+                                </p>
+                                <p><strong>Salário:</strong>
+                                    <%= vaga.faixaSalarial %>
+                                </p>
                                 <form action="/candidato/candidatar" method="POST">
                                     <input type="hidden" name="vagaId" value="<%= vaga.id %>">
-                                    <button type="submit">Candidatar-se</button>
+                                    <% if (vagasCandidatadasIds.includes(vaga.id)) { %>
+                                        <button type="button" class="btn btn-secondary candidated" disabled>Já
+                                            Candidatado</button>
+                                        <% } else { %>
+                                            <button type="submit" class="btn btn-primary">Candidatar-se</button>
+                                            <% } %>
                                 </form>
                             </li>
-                        <% }); %>
+                            <% }); %>
                     </ul>
-    
+
                     <nav>
                         <ul class="pagination">
-                            <% for (let i = 1; i <= totalPages; i++) { %>
+                            <% for (let i=1; i <=totalPages; i++) { %>
                                 <li class="<%= i === currentPage ? 'active' : '' %>">
-                                    <a href="/candidato/vagas?page=<%= i %>&busca=<%= busca %>"><%= i %></a>
+                                    <a href="/candidato/vagas?page=<%= i %>&busca=<%= busca %>">
+                                        <%= i %>
+                                    </a>
                                 </li>
-                            <% } %>
+                                <% } %>
                         </ul>
                     </nav>
-                <% } else { %>
-                    <p>Nenhuma vaga disponível.</p>
-                <% } %>
+                    <% } else { %>
+                        <p>Nenhuma vaga disponível.</p>
+                        <% } %>
             </div>
         </div>
     </section>
-    
-<%- include('../partials/footer') %>
+
+
+    <%- include('../partials/footer') %>
