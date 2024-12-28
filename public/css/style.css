@@ -533,6 +533,9 @@ justify-content: center;
   cursor: pointer;
   text-decoration: none;
 }
+.vagas-aprovadas p {
+  color: white;
+}
 .cabecalho-candidato-vagas {
   margin-bottom: 50px;
 }
