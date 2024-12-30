@@ -239,74 +239,6 @@ router.post('/vagas/excluir/:id', verifyToken, async (req, res) => {
     res.status(500).send('Erro ao excluir vaga.');
   }
 });
-router.get('/vagas/:vagaId/candidatos', verifyToken, async (req, res) => {
-  const { vagaId } = req.params;
-  const { busca, page = 1 } = req.query;
-  const perPage = 10; // Exibe 10 candidatos por página
-
-  try {
-    const vaga = await prisma.vaga.findUnique({
-      where: { id: vagaId },
-      include: {
-        empresa: true,
-      },
-    });
-
-    if (!vaga || vaga.empresaId !== req.user.userId) {
-      return res.status(403).send('Acesso negado.');
-    }
-
-    // Melhoria na lógica de busca
-    const where = busca
-      ? {
-          AND: [
-            { vagaId },
-            {
-              OR: [
-                { candidato: { nomeCompleto: { contains: busca, mode: 'insensitive' } } },
-                { candidato: { cidade: { contains: busca, mode: 'insensitive' } } },
-                { candidato: { cursos: { some: { curso: { contains: busca, mode: 'insensitive' } } } } },
-                { candidato: { experienciasProfissionais: { some: { empresa: { contains: busca, mode: 'insensitive' } } } } },
-                { candidato: { experienciasProfissionais: { some: { funcao: { contains: busca, mode: 'insensitive' } } } } },
-                { candidato: { experienciasProfissionais: { some: { cargo: { contains: busca, mode: 'insensitive' } } } } },
-              ],
-            },
-          ],
-        }
-      : { vagaId };
-
-    // Contar o total de candidatos para a paginação
-    const totalCandidatos = await prisma.candidatura.count({ where });
-
-    // Buscar as candidaturas com os candidatos e aplicar paginação
-    const candidaturas = await prisma.candidatura.findMany({
-      where,
-      include: {
-        candidato: {
-          include: {
-            cursos: true,
-            experienciasProfissionais: true,
-          },
-        },
-      },
-      skip: (page - 1) * perPage,
-      take: perPage,
-      orderBy: { createdAt: 'desc' },
-    });
-
-    res.render('empresa/candidatos', {
-      vaga,
-      vagaId,
-      candidaturas,
-      busca: busca || '',
-      currentPage: parseInt(page, 10),
-      totalPages: Math.ceil(totalCandidatos / perPage),
-    });
-  } catch (error) {
-    console.error('Erro ao carregar candidatos:', error);
-    res.status(500).send('Erro ao carregar os candidatos.');
-  }
-});
 
 
 
@@ -674,6 +606,169 @@ router.get('/perfil/:id', async (req, res) => {
 });
 
 
+
+
+
+
+
+/*
+
+router.get('/vagas/:vagaId/candidatos', verifyToken, async (req, res) => {
+  const { vagaId } = req.params;
+  const { busca, page = 1 } = req.query;
+  const perPage = 10; // Exibe 10 candidatos por página
+
+  try {
+    const vaga = await prisma.vaga.findUnique({
+      where: { id: vagaId },
+      include: {
+        empresa: true,
+      },
+    });
+
+    if (!vaga || vaga.empresaId !== req.user.userId) {
+      return res.status(403).send('Acesso negado.');
+    }
+
+    // Melhoria na lógica de busca
+    const where = busca
+      ? {
+          AND: [
+            { vagaId },
+            {
+              OR: [
+                { candidato: { nomeCompleto: { contains: busca, mode: 'insensitive' } } },
+                { candidato: { cidade: { contains: busca, mode: 'insensitive' } } },
+                { candidato: { cursos: { some: { curso: { contains: busca, mode: 'insensitive' } } } } },
+                { candidato: { experienciasProfissionais: { some: { empresa: { contains: busca, mode: 'insensitive' } } } } },
+                { candidato: { experienciasProfissionais: { some: { funcao: { contains: busca, mode: 'insensitive' } } } } },
+                { candidato: { experienciasProfissionais: { some: { cargo: { contains: busca, mode: 'insensitive' } } } } },
+              ],
+            },
+          ],
+        }
+      : { vagaId };
+
+    // Contar o total de candidatos para a paginação
+    const totalCandidatos = await prisma.candidatura.count({ where });
+
+    // Buscar as candidaturas com os candidatos e aplicar paginação
+    const candidaturas = await prisma.candidatura.findMany({
+      where,
+      include: {
+        candidato: {
+          include: {
+            cursos: true,
+            experienciasProfissionais: true,
+          },
+        },
+      },
+      skip: (page - 1) * perPage,
+      take: perPage,
+      orderBy: { createdAt: 'desc' },
+    });
+
+    res.render('empresa/candidatos', {
+      vaga,
+      vagaId,
+      candidaturas,
+      busca: busca || '',
+      currentPage: parseInt(page, 10),
+      totalPages: Math.ceil(totalCandidatos / perPage),
+    });
+  } catch (error) {
+    console.error('Erro ao carregar candidatos:', error);
+    res.status(500).send('Erro ao carregar os candidatos.');
+  }
+});
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.get('/vagas/:vagaId/candidatos', verifyToken, async (req, res) => {
+  const { vagaId } = req.params;
+  const { busca, faixaSalarial, tipoContrato, disponibilidade, escolaridade, ocupacao, idiomas, page = 1 } = req.query;
+  const perPage = 10;
+
+  try {
+    const vaga = await prisma.vaga.findUnique({
+      where: { id: vagaId },
+      include: { empresa: true },
+    });
+
+    if (!vaga || vaga.empresaId !== req.user.userId) {
+      return res.status(403).send('Acesso negado.');
+    }
+
+    // Construir o filtro dinamicamente
+    const where = {
+      vagaId,
+      AND: [
+        ...(busca
+          ? [
+              {
+                OR: [
+                  { candidato: { nomeCompleto: { contains: busca, mode: 'insensitive' } } },
+                  { candidato: { cidade: { contains: busca, mode: 'insensitive' } } },
+                  { candidato: { cursos: { some: { curso: { contains: busca, mode: 'insensitive' } } } } },
+                  { candidato: { experienciasProfissionais: { some: { empresa: { contains: busca, mode: 'insensitive' } } } } },
+                ],
+              },
+            ]
+          : []),
+        ...(faixaSalarial ? [{ candidato: { faixaSalarial: { equals: faixaSalarial } } }] : []),
+        ...(tipoContrato ? [{ candidato: { tipoContrato: { equals: tipoContrato } } }] : []),
+        ...(disponibilidade ? [{ candidato: { disponibilidade: { equals: disponibilidade } } }] : []),
+        ...(escolaridade ? [{ candidato: { escolaridade: { equals: escolaridade } } }] : []),
+        ...(ocupacao ? [{ candidato: { ocupacao: { contains: ocupacao, mode: 'insensitive' } } }] : []),
+        ...(idiomas && idiomas.length > 0
+          ? [{ candidato: { idiomas: { hasSome: idiomas } } }]
+          : []),
+      ],
+    };
+
+    
+
+    const totalCandidatos = await prisma.candidatura.count({ where });
+
+    const candidaturas = await prisma.candidatura.findMany({
+      where,
+      include: { candidato: true },
+      skip: (page - 1) * perPage,
+      take: perPage,
+      orderBy: { createdAt: 'desc' },
+    });
+
+    res.render('empresa/candidatos', {
+      vaga,
+      vagaId,
+      candidaturas,
+      busca: busca || '',
+      faixaSalarial: faixaSalarial || '',
+      tipoContrato: tipoContrato || '',
+      disponibilidade: disponibilidade || '',
+      escolaridade: escolaridade || '',
+      ocupacao: ocupacao || '',
+      idiomas: idiomas || [],
+      currentPage: parseInt(page, 10),
+      totalPages: Math.ceil(totalCandidatos / perPage),
+    });
+  } catch (error) {
+    console.error('Erro ao carregar candidatos:', error);
+    res.status(500).send('Erro ao carregar os candidatos.');
+  }
+});
 
 
 module.exports = router;

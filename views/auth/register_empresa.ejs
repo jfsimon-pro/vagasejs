@@ -1,11 +1,24 @@
 <%- include('../partials/header') %>
+<style>
+  .content-main-login li {
+    color: white;
+    margin-bottom: 15px;
+  }
+</style>
   <div class="main-login">
     <div class="content-main-login">
       <h1>Cadastro de Empresa</h1>
+      <% if (errors && errors.length > 0) { %>
+        <ul>
+          <% errors.forEach(error => { %>
+            <li><%= error.msg %></li>
+          <% }) %>
+        </ul>
+      <% } %>
       <form action="/auth/register_empresa" method="POST">
         <input type="text" id="cnpj" name="cnpj" maxlength="14" placeholder="CNPJ" required>
         <input type="text" id="razaoSocial" name="razaoSocial" placeholder="Razão Social" required readonly>
-        <input type="text" id="nomeFantasia" name="nomeFantasia" placeholder="Nome Fantasia" required readonly>
+        <input type="text" id="nomeFantasia" name="nomeFantasia" placeholder="Nome Fantasia">
         <input type="text" name="ie" placeholder="Inscrição Estadual (Opcional)">
         <input type="text" id="cep" name="cep" maxlength="8" placeholder="CEP" required>
         <input type="text" id="logradouro" name="logradouro" placeholder="Logradouro" required readonly>
@@ -24,12 +37,6 @@
     </div>
   </div>
 
-  <% if (errors && errors.length > 0) { %>
-    <ul>
-      <% errors.forEach(error => { %>
-        <li><%= error.msg %></li>
-      <% }) %>
-    </ul>
-  <% } %>
+ 
   <script src="/js/cnpj.js"></script>
   <%- include('../partials/footer') %>

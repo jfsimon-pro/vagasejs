@@ -1,8 +1,24 @@
 <%- include('../partials/header') %>
+<style>
+  .content-main-login ul {
+    margin-bottom: 12px;
+  }
+  .content-main-login li {
+    color: white;
+    margin-bottom: 7px;
+  }
+</style>
   <div class="main-login">
     <div class="content-main-login">
       <h1>Cadastro de Candidato</h1>
-      <form action="/auth/register_candidato" method="POST" enctype="multipart/form-data">
+      <% if (errors.length > 0) { %>
+        <ul>
+          <% errors.forEach(error => { %>
+            <li><%= error.msg %></li>
+          <% }) %>
+        </ul>
+      <% } %>
+      <form action="/auth/register_candidato" method="POST">
         <input type="text" name="nomeCompleto" placeholder="Nome Completo" required>
         <input type="text" name="cpf" placeholder="CPF" required>
         <input type="text" name="telefone" placeholder="Telefone" required>
@@ -15,19 +31,12 @@
         <input type="text" id="bairro" name="bairro" placeholder="Bairro" required readonly>
         <input type="text" id="cidade" name="cidade" placeholder="Cidade" required readonly>
         <input type="text" id="uf" name="uf" maxlength="2" placeholder="UF" required readonly>
-        <input type="file" name="curriculo" accept=".pdf,.docx" required>
         <button type="submit">Cadastrar</button>
       </form>
     </div>
   </div>
 
-  <% if (errors.length > 0) { %>
-    <ul>
-      <% errors.forEach(error => { %>
-        <li><%= error.msg %></li>
-      <% }) %>
-    </ul>
-  <% } %>
+ 
   <script src="/js/cep.js"></script>
   <%- include('../partials/footer') %>
   

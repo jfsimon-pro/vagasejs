@@ -1,4 +1,39 @@
 <%- include('./header') %>
+<style>
+  /* Estilizando a caixa de sugestões */
+.autocomplete-suggestions {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* Estilizando cada sugestão */
+.autocomplete-suggestions .suggestion {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Sugestão ao passar o mouse */
+.autocomplete-suggestions .suggestion:hover {
+  background-color: #f0f0f0;
+}
+
+/* Sugestão selecionada */
+.autocomplete-suggestions .suggestion.active {
+  background-color: #e0e0e0;
+  font-weight: bold;
+}
+.main-login {
+    background: #01162a;
+  }
+
+</style>
   <div class="main-login">
     
     <div class="content-main-login">
@@ -14,19 +49,25 @@
         <input type="text" id="tags" name="tags">
       
         <label for="cargo">Cargo/Função:</label>
-        <select id="cargo" name="cargo" required>
-          <option value="">Selecione</option>
-          <!-- Lista de Cargos -->
-          <option value="Programador">Programador</option>
-          <option value="Desenvolvedor Front-end">Desenvolvedor Front-end</option>
-          <!-- Continue com os demais cargos fornecidos -->
-        </select>
+        <input type="text" id="cargo" name="cargo" placeholder="Digite o cargo ou função" required>
+        <div id="suggestions" class="autocomplete-suggestions"></div>
+
       
         <label for="faixaSalarial">Faixa Salarial:</label>
         <select id="faixaSalarial" name="faixaSalarial" required>
           <option value="">Selecione</option>
-          <option value="R$1.000 - R$4.000">R$1.000 - R$4.000</option>
-          <option value="R$5.000 - R$8.000">R$5.000 - R$8.000</option>
+          <option value="Até 2.000">Até 2.000"</option>
+          <option value="A partir de R$ 2.000,00">A partir de R$ 2.000,00</option>
+          <option value="A partir de R$ 3.000,00">A partir de R$ 3.000,00</option>
+          <option value="A partir de R$ 4.000,00">A partir de R$ 4.000,00</option>
+          <option value="A partir de R$ 5.000,00">A partir de R$ 5.000,00</option>
+          <option value="A partir de R$ 6.000,00">A partir de R$ 6.000,00</option>
+          <option value="A partir de R$ 7.000,00">A partir de R$ 7.000,00</option>
+          <option value="A partir de R$ 8.000,00">A partir de R$ 8.000,00</option>
+          <option value="A partir de R$ 9.000,00">A partir de R$ 9.000,00</option>
+          <option value="A partir de R$ 10.000,00">A partir de R$ 10.000,00</option>
+          <option value="A partir de R$ 15.000,00">A partir de R$ 15.000,00</option>
+          <option value="A partir de R$ 20.000,00">A partir de R$ 20.000,00</option>
           <!-- Adicione mais opções conforme necessário -->
         </select>
       
@@ -35,7 +76,11 @@
           <option value="">Selecione</option>
           <option value="CLT">CLT</option>
           <option value="PJ">PJ</option>
+          <option value="Temporário">Temporário</option>
+          <option value="Autônomo">Autônomo</option>
           <option value="Estágio">Estágio</option>
+          <option value="Freelancer">Freelancer</option>
+          <option value="Aprendiz">Aprendiz</option>      
         </select>
       
         <label for="disponibilidade">Disponibilidade:</label>
@@ -46,6 +91,7 @@
           <option value="madrugada">Madrugada</option>
           <option value="finais_de_semana">Finais de Semana</option>
           <option value="feriados">Feriados</option>
+          <option value="viajar">Viajar</option>
         </select>
 
       
@@ -56,33 +102,64 @@
         <select id="tipoTrabalho" name="tipoTrabalho" required>
           <option value="">Selecione</option>
           <option value="Presencial">Presencial</option>
-          <option value="Remoto">Remoto</option>
+          <option value="Remoto">Home Office</option>
           <option value="Híbrido">Híbrido</option>
         </select>
       
         <label for="escolaridade">Escolaridade:</label>
         <select id="escolaridade" name="escolaridade" required>
           <option value="">Selecione</option>
-          <option value="Ensino Fundamental Incompleto">Ensino Fundamental Incompleto</option>
-          <option value="Ensino Fundamental Completo">Ensino Fundamental Completo</option>
+          <option value="Indiferente">Indiferente</option>
+          <option value="Alfabetizado">Alfabetizado</option>
+          <option value="Ensino fundamental incompleto">Ensino fundamental incompleto</option>
+          <option value="Ensino fundamental completo">Ensino fundamental completo</option>
+          <option value="Ensino médio incompleto">Ensino médio incompleto</option>
+          <option value="Ensino médio completo">Ensino médio completo</option>
+          <option value="Ensino técnico ou profissionalizante incompleto">Ensino técnico ou profissionalizante incompleto</option>
+          <option value="Ensino técnico ou profissionalizante completo">Ensino técnico ou profissionalizante completo</option>
+          <option value="Ensino tecnólogo incompleto">Ensino tecnólogo incompleto</option>
+          <option value="Ensino tecnólogo completo">Ensino tecnólogo completo</option>
+          <option value="Ensino superior incompleto">Ensino superior incompleto</option>
+          <option value="Ensino superior completo">Ensino superior completo</option>
+          <option value="Pós graduação incompleta">Pós graduação incompleta</option>
+          <option value="Pós graduação completa">Pós graduação completa</option>
           <!-- Continue com as demais opções -->
         </select>
       
         <label for="idiomas">Idiomas:</label>
         <select id="idiomas" name="idiomas[]" multiple required>
-          <option value="Inglês">Inglês</option>
           <option value="Português">Português</option>
+          <option value="Inglês">Inglês</option>
+          <option value="Mandarim">Mandarim</option>
           <option value="Espanhol">Espanhol</option>
-          <option value="Outros">Outros</option>
+          <option value="Francês">Francês</option>
+          <option value="Árabe">Árabe</option>
+          <option value="Outros">Outros</option>          
         </select>
       
         <label for="beneficios">Benefícios:</label>
         <select id="beneficios" name="beneficios[]" multiple required>
-          <option value="VA">VA</option>
-          <option value="VR">VR</option>
-          <option value="Plano Odonto">Plano Odonto</option>
-          <option value="Plano de Saúde">Plano de Saúde</option>
-          <option value="GymPass">GymPass</option>
+          <option value="Vale alimentação">Vale alimentação</option>
+          <option value="Vale refeição">Vale refeição</option>
+          <option value="Plano médico">Plano médico</option>
+          <option value="Plano odontológico">Plano odontológico</option>
+          <option value="Gym pass ou convênio academia">Gym pass ou convênio academia</option>
+          <option value="Vale transporte">Vale transporte</option>
+          <option value="Seguro de vida">Seguro de vida</option>
+          <option value="Reembolso educacional">Reembolso educacional</option>
+          <option value="Plano de carreira">Plano de carreira</option>
+          <option value="Plataformas de educação">Plataformas de educação</option>
+          <option value="Bônus por desempenho">Bônus por desempenho</option>
+          <option value="Participação nos lucros">Participação nos lucros</option>
+          <option value="Desconto em produtos ou serviços">Desconto em produtos ou serviços</option>
+          <option value="Empréstimos corporativos">Empréstimos corporativos</option>
+          <option value="Day off no aniversário">Day off no aniversário</option>
+          <option value="Auxílio creche">Auxílio creche</option>
+          <option value="Programa de reconhecimento de talentos">Programa de reconhecimento de talentos</option>
+          <option value="Benefícios de lazer e viagem">Benefícios de lazer e viagem</option>
+          <option value="Cesta básica">Cesta básica</option>
+          <option value="Presente de datas comemorativas">Presente de datas comemorativas</option>
+          
         </select>
       
         <button type="submit">Criar Vaga</button>
@@ -90,5 +167,5 @@
       
     </div>
   </div>
-
+  <script src="/js/autocompleteempresa.js"></script>
   <%- include('../partials/footer') %>

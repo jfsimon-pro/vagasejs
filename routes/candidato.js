@@ -75,7 +75,7 @@ router.get('/dashboard', verifyToken, async (req, res) => {
   }
 });
 
-
+/*
 router.get('/vagas', verifyToken, async (req, res) => {
   const { busca, page = 1 } = req.query;
   const perPage = 3; // Quantidade de vagas por página
@@ -128,7 +128,7 @@ router.get('/vagas', verifyToken, async (req, res) => {
     res.status(500).send('Erro ao carregar vagas disponíveis.');
   }
 });
-
+*/
 
 router.get('/vagas-candidatadas', verifyToken, async (req, res) => {
   try {
@@ -357,7 +357,9 @@ router.post('/editar-dados', verifyToken, async (req, res) => {
     numero,
     bairro,
     cidade,
-    uf
+    uf,
+    idiomas = [], // Idiomas como array
+    escolaridade,
   } = req.body;
 
   try {
@@ -373,7 +375,9 @@ router.post('/editar-dados', verifyToken, async (req, res) => {
         numero,
         bairro,
         cidade,
-        uf
+        uf,
+        idiomas, // Atualiza idiomas
+        escolaridade,
       },
     });
 
@@ -383,36 +387,6 @@ router.post('/editar-dados', verifyToken, async (req, res) => {
     res.status(500).send('Erro ao atualizar os dados.');
   }
 });
-
-
-// Rota para listar vagas disponíveis com filtro de busca
-router.get('/vagas', verifyToken, async (req, res) => {
-  const { busca } = req.query;
-
-  try {
-    // Filtro de busca
-    const where = busca
-      ? {
-          OR: [
-            { titulo: { contains: busca, mode: 'insensitive' } },
-            { descricao: { contains: busca, mode: 'insensitive' } },
-            { cargoFuncao: { contains: busca, mode: 'insensitive' } },
-          ],
-        }
-      : {};
-
-    const vagas = await prisma.vaga.findMany({
-      where,
-      orderBy: { createdAt: 'desc' }, // Ordena por data de criação
-    });
-
-    res.render('candidato/vagas', { vagas, busca });
-  } catch (error) {
-    console.error('Erro ao carregar vagas:', error);
-    res.status(500).send('Erro ao carregar as vagas disponíveis.');
-  }
-});
-
 // Rota para exibir formulário de avaliação
 router.get('/avaliar/:empresaId', verifyToken, async (req, res) => {
   const { empresaId } = req.params;
@@ -591,4 +565,206 @@ router.post('/vagas/:vagaId/avaliar', verifyToken, async (req, res) => {
 
 
 
+router.get('/vagas', verifyToken, async (req, res) => {
+  const { busca, faixaSalarial, tipoContrato, page = 1 } = req.query;
+  const perPage = 3; // Quantidade de vagas por página
+  const currentPage = parseInt(page, 10) || 1;
+
+  try {
+    // Buscar IDs das vagas já candidatadas pelo candidato
+    const candidaturas = await prisma.candidatura.findMany({
+      where: { candidatoId: req.user.userId },
+      select: { vagaId: true },
+    });
+
+    const vagasCandidatadasIds = candidaturas.map((candidatura) => candidatura.vagaId);
+
+    // Montar condições de busca
+    const where = {
+      AND: [
+        ...(busca
+          ? [
+              {
+                OR: [
+                  { titulo: { contains: busca, mode: 'insensitive' } },
+                  { descricao: { contains: busca, mode: 'insensitive' } },
+                  { cargo: { contains: busca, mode: 'insensitive' } },
+                ],
+              },
+            ]
+          : []),
+        ...(faixaSalarial
+          ? [{ faixaSalarial: { equals: faixaSalarial } }]
+          : []),
+        ...(tipoContrato
+          ? [{ tipoContrato: { equals: tipoContrato } }]
+          : []),
+      ],
+    };
+
+    // Total de vagas
+    const totalVagas = await prisma.vaga.count({ where });
+
+    // Buscar vagas com paginação
+    const vagasDisponiveis = await prisma.vaga.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      skip: (currentPage - 1) * perPage,
+      take: perPage,
+    });
+
+    // Renderizar a página com as vagas filtradas
+    res.render('candidato/vagas_disponiveis', {
+      vagasDisponiveis,
+      vagasCandidatadasIds, // Passar os IDs das vagas já candidatadas
+      busca: busca || '',
+      faixaSalarial: faixaSalarial || '',
+      tipoContrato: tipoContrato || '',
+      currentPage,
+      totalPages: Math.ceil(totalVagas / perPage),
+    });
+  } catch (error) {
+    console.error('Erro ao carregar vagas disponíveis:', error);
+    res.status(500).send('Erro ao carregar vagas disponíveis.');
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.get('/metas', verifyToken, async (req, res) => {
+  try {
+    const candidato = await prisma.candidato.findUnique({
+      where: { id: req.user.userId },
+      select: {
+        tipoContrato: true,
+        ocupacao: true,
+        disponibilidade: true,
+        faixaSalarial: true,
+      },
+    });
+
+    if (!candidato) {
+      return res.status(404).send('Candidato não encontrado.');
+    }
+
+    res.render('candidato/minhas_metas', { candidato });
+  } catch (error) {
+    console.error('Erro ao carregar metas:', error);
+    res.status(500).send('Erro ao carregar metas.');
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+router.post('/metas', verifyToken, async (req, res) => {
+  const { tipoContrato, ocupacao, disponibilidade, faixaSalarial } = req.body;
+
+
+
+  try {
+    await prisma.candidato.update({
+      where: { id: req.user.userId },
+      data: {
+        tipoContrato: tipoContrato || null,
+        ocupacao: ocupacao || null,
+        disponibilidade: disponibilidade || null,
+        faixaSalarial: faixaSalarial || null,
+      },
+    });
+
+    res.redirect('/candidato/metas');
+  } catch (error) {
+    console.error('Erro ao salvar metas:', error);
+    res.status(500).send('Erro ao salvar metas.');
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.get('/vagas/:vagaId/detalhes', verifyToken, async (req, res) => {
+  const { vagaId } = req.params;
+
+  try {
+    const vaga = await prisma.vaga.findUnique({
+      where: { id: vagaId },
+      include: {
+        empresa: true, // Inclui informações da empresa que criou a vaga
+      },
+    });
+
+    if (!vaga) {
+      return res.status(404).send('Vaga não encontrada.');
+    }
+
+    // Verificar se o candidato já está associado à vaga
+    const candidaturaExistente = await prisma.candidatura.findFirst({
+      where: {
+        vagaId: vaga.id,
+        candidatoId: req.user.userId,
+      },
+    });
+
+    const jaCandidatado = !!candidaturaExistente;
+
+    res.render('candidato/detalhes_vaga', { vaga, jaCandidatado });
+  } catch (error) {
+    console.error('Erro ao carregar detalhes da vaga:', error);
+    res.status(500).send('Erro ao carregar os detalhes da vaga.');
+  }
+});
+
+
+
 module.exports = router;
+
+
+
+
+
+
+

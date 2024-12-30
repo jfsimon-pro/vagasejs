@@ -1,7 +1,19 @@
 <%- include('../partials/header') %>
+<style>
+  .message {
+    color: white;
+    margin-bottom: 15px;
+  }
+</style>
 <div class="main-login">
   <div class="content-main-login">
     <h1>Área da Empresa</h1>
+    <div>
+      <% if (message) { %>
+        <p class="message"><%= message %></p>
+      <% } %>
+    </div>
+    
     <form action="/auth/login_empresa" method="POST">
       <input type="email" name="email" placeholder="E-mail" required>
       <input type="password" name="senha" placeholder="Senha" required>
@@ -11,11 +23,6 @@
 </div>
 
 
-<div>
-  <% if (message) { %>
-    <p class="message"><%= message %></p>
-  <% } %>
-</div>
 
 
 <%- include('../partials/footer') %>

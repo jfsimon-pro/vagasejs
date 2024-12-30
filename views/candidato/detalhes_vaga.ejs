@@ -1,0 +1,78 @@
+<%- include('./header') %>
+<style>
+  .detalhes-vaga-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 80px 10px;
+  }
+  .detalhes-vaga-container p {
+    margin-bottom: 25px;
+  }
+  .detalhes-vaga-container strong {
+    font-weight: bold;
+  }
+  .detalhes-vaga-container h1, .detalhes-vaga-container h2 {
+    font-weight: bold;
+    font-size: 25px;
+    margin-bottom: 20px;
+  }
+  .btn-primary {
+    background: #F78E0F;
+    color: white;
+    border: none;
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+  .btn-secondary {
+    background: red !important;
+    cursor: not-allowed;
+    color: white;
+    border: none;
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+  .btn-voltar {
+    color: black;
+  }
+  .botoes-detalhes-vaga-2 a {
+    margin-top: 0px !important;
+    color: black;
+  }
+  .botoes-detalhes-vaga-2 {
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+</style>
+<div class="detalhes-vaga-container">
+  <h1>Detalhes da Vaga</h1>
+  <p><strong>Título:</strong> <%= vaga.titulo %></p>
+  <p><strong>Descrição:</strong> <%= vaga.descricao %></p>
+  <p><strong>Tags:</strong> <%= vaga.tags.join(', ') %></p>
+  <p><strong>Cargo/Função:</strong> <%= vaga.cargo %></p>
+  <p><strong>Faixa Salarial:</strong> <%= vaga.faixaSalarial %></p>
+  <p><strong>Tipo de Contrato:</strong> <%= vaga.tipoContrato %></p>
+  <p><strong>Disponibilidade:</strong> <%= vaga.disponibilidade %></p>
+  <p><strong>Horário de Trabalho:</strong> <%= vaga.horarioTrabalho %></p>
+  <p><strong>Tipo de Trabalho:</strong> <%= vaga.tipoTrabalho %></p>
+  <p><strong>Escolaridade:</strong> <%= vaga.escolaridade %></p>
+  <p><strong>Idiomas Requeridos:</strong> <%= vaga.idiomas.join(', ') %></p>
+  <p><strong>Benefícios:</strong> <%= vaga.beneficios.join(', ') %></p>
+  <h2>Informações da Empresa</h2>
+  <p><strong>Empresa:</strong> <%= vaga.empresa.nomeFantasia %></p>
+
+  <div class="botoes-detalhes-vaga-2">
+    <% if (jaCandidatado) { %>
+      <button class="btn btn-secondary" disabled>Já Candidatado</button>
+    <% } else { %>
+      <form action="/candidato/candidatar" method="POST">
+        <input type="hidden" name="vagaId" value="<%= vaga.id %>">
+        <button type="submit" class="btn btn-primary">Candidatar-se</button>
+      </form>
+    <% } %>
+  
+    <a href="/candidato/vagas" class="btn btn-voltar">Voltar</a>
+  </div>
+</div>
+<%- include('../partials/footer') %>

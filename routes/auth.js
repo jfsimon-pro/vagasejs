@@ -253,90 +253,10 @@ router.get('/logout', (req, res) => {
 });
 
 
-// Página de cadastro para candidato
-router.get('/register_candidato', (req, res) => {
-  res.render('auth/register_candidato', { errors: [] });
-});
 
 
 
-// Processar cadastro de candidato
-router.post(
-  '/register_candidato',
-  upload.single('curriculo'), // Middleware de upload para o campo 'curriculo'
-  [
-    body('nomeCompleto').notEmpty().trim().escape().withMessage('Nome completo é obrigatório.'),
-    body('cpf').isLength({ min: 11 }).trim().escape().withMessage('CPF inválido.'),
-    body('telefone').notEmpty().trim().escape().withMessage('Telefone é obrigatório.'),
-    body('email').isEmail().withMessage('E-mail inválido.'),
-    body('senha').isLength({ min: 6 }).trim().escape().withMessage('A senha deve ter pelo menos 6 caracteres.'),
-    body('cep').notEmpty().trim().escape().withMessage('CEP é obrigatório.'),
-    body('logradouro').notEmpty().trim().escape().withMessage('Logradouro é obrigatório.'),
-    body('complemento').notEmpty().trim().escape().withMessage('Complemento é obrigatório.'),
-    body('numero').notEmpty().trim().escape().withMessage('Número é obrigatório.'),
-    body('bairro').notEmpty().trim().escape().withMessage('Bairro é obrigatório.'),
-    body('cidade').notEmpty().trim().escape().withMessage('Cidade é obrigatória.'),
-    body('uf').notEmpty().trim().escape().withMessage('Uf é obrigatório.'),
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).render('auth/register_candidato', { errors: errors.array() });
-    }
 
-    const {
-      nomeCompleto,
-      cpf,
-      telefone,
-      email,
-      senha,
-      cep,
-      logradouro,
-      complemento,
-      numero,
-      bairro,
-      cidade,
-      uf,
-    } = req.body;
-
-    const curriculo = req.file ? req.file.path : null;
-
-    try {
-      const existingUser = await prisma.candidato.findUnique({ where: { email } });
-      if (existingUser) {
-        return res.status(400).render('auth/register_candidato', { errors: [{ msg: 'E-mail já registrado.' }] });
-      }
-
-      const hashedPassword = await bcrypt.hash(senha, SALT_ROUNDS);
-      const verificationToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '24h' });
-
-      await prisma.candidato.create({
-        data: {
-          nomeCompleto,
-          cpf,
-          telefone,
-          email,
-          senha: hashedPassword,
-          emailVerificado: false,
-          verificationToken,
-          cep,
-          logradouro,
-          complemento,
-          numero,
-          bairro,
-          cidade,
-          uf,
-          curriculo,
-        },
-      });
-
-      res.redirect('/auth/login_candidato');
-    } catch (error) {
-      console.error(error);
-      res.status(500).render('auth/register_candidato', { errors: [{ msg: 'Erro ao registrar candidato.' }] });
-    }
-  }
-);
 // Página de login da empresa
 router.get('/login_empresa', (req, res) => {
   res.render('auth/login_empresa', { errors: [], message: '' });
@@ -427,78 +347,129 @@ router.post('/login_empresa', [
 
 
 
+// ---------------------------------
+// ROTAS DE AUTENTICAÇÃO DO CANDIDATO
+// ---------------------------------
 
-
-
-
-// Página de login do candidato
-router.get('/login_candidato', (req, res) => {
-  res.render('auth/login_candidato', { errors: [], message: null });
+// Página de cadastro para candidato
+router.get('/register_candidato', (req, res) => {
+  res.render('auth/register_candidato', { errors: [] });
 });
 
-// Processar login do candidato
-router.post('/login_candidato', [
-  body('email').isEmail().withMessage('E-mail inválido.'),
-  body('senha').isLength({ min: 6 }).trim().escape().withMessage('Senha inválida.')
-], async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).render('auth/login_candidato', { 
-      errors: errors.array(), 
-      message: null 
-    });
-  }
 
-  const { email, senha } = req.body;
 
+
+// Função para enviar e-mails
+async function sendEmail(to, subject, html) {
   try {
-    const candidato = await prisma.candidato.findUnique({ where: { email } });
-
-    if (!candidato) {
-      return res.status(400).render('auth/login_candidato', { 
-        errors: [{ msg: 'E-mail ou senha incorretos.' }], 
-        message: null 
-      });
-    }
-
-    // Verificar se o e-mail foi confirmado
-    if (!candidato.emailVerificado) {
-      return res.status(400).render('auth/login_candidato', { 
-        errors: [{ msg: 'E-mail não verificado. Verifique sua caixa de entrada.' }], 
-        message: null 
-      });
-    }
-
-    const senhaValida = await bcrypt.compare(senha, candidato.senha);
-    if (!senhaValida) {
-      return res.status(400).render('auth/login_candidato', { 
-        errors: [{ msg: 'E-mail ou senha incorretos.' }], 
-        message: null 
-      });
-    }
-
-    const token = jwt.sign({ userId: candidato.id, role: 'candidato' }, process.env.JWT_SECRET, {
-      expiresIn: '1h'
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER, // Certifique-se de configurar o EMAIL_USER no .env
+        pass: process.env.EMAIL_PASSWORD, // Certifique-se de configurar o EMAIL_PASS no .env
+      },
     });
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      sameSite: 'Strict',
-      secure: process.env.NODE_ENV === 'production'
-    });
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to,
+      subject,
+      html,
+    };
 
-    res.redirect('/candidato/dashboard');
+    await transporter.sendMail(mailOptions);
+    console.log(`E-mail enviado para ${to}`);
   } catch (error) {
-    console.error(error);
-    res.status(500).render('auth/login_candidato', { 
-      errors: [{ msg: 'Erro ao fazer login.' }], 
-      message: null 
-    });
+    console.error('Erro ao enviar o e-mail:', error);
+    throw error;
   }
-});
+}
+router.post(
+  '/register_candidato',
+  [
+    body('nomeCompleto').notEmpty().trim().escape().withMessage('Nome completo é obrigatório.'),
+    body('cpf')
+      .isLength({ min: 11, max: 11 }).trim().escape().withMessage('CPF inválido. Deve ter 11 caracteres.'),
+    body('telefone').notEmpty().trim().escape().withMessage('Telefone é obrigatório.'),
+    body('email').isEmail().withMessage('E-mail inválido.'),
+    body('senha').isLength({ min: 6 }).trim().escape().withMessage('A senha deve ter pelo menos 6 caracteres.'),
+    body('cep').notEmpty().trim().escape().withMessage('CEP é obrigatório.'),
+    body('logradouro').notEmpty().trim().escape().withMessage('Logradouro é obrigatório.'),
+    body('complemento').notEmpty().trim().escape().withMessage('Complemento é obrigatório.'),
+    body('numero').notEmpty().trim().escape().withMessage('Número é obrigatório.'),
+    body('bairro').notEmpty().trim().escape().withMessage('Bairro é obrigatório.'),
+    body('cidade').notEmpty().trim().escape().withMessage('Cidade é obrigatória.'),
+    body('uf').notEmpty().trim().escape().withMessage('UF é obrigatório.'),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render('auth/register_candidato', { errors: errors.array() });
+    }
+
+    const {
+      nomeCompleto,
+      cpf,
+      telefone,
+      email,
+      senha,
+      cep,
+      logradouro,
+      complemento,
+      numero,
+      bairro,
+      cidade,
+      uf,
+    } = req.body;
+
+    try {
+      const existingUser = await prisma.candidato.findUnique({ where: { email } });
+      if (existingUser) {
+        return res.status(400).render('auth/register_candidato', { errors: [{ msg: 'E-mail já registrado.' }] });
+      }
+
+      const hashedPassword = await bcrypt.hash(senha, SALT_ROUNDS);
+      const verificationToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '24h' });
+
+      await prisma.candidato.create({
+        data: {
+          nomeCompleto,
+          cpf,
+          telefone,
+          email,
+          senha: hashedPassword,
+          emailVerificado: false,
+          verificationToken,
+          cep,
+          logradouro,
+          complemento,
+          numero,
+          bairro,
+          cidade,
+          uf,
+        },
+      });
+
+      // Enviar o e-mail de verificação
+      const verificationLink = `http://localhost:3000/auth/verify_candidato?token=${verificationToken}`;
+      await sendEmail(email, 'Confirmação de Cadastro', `
+        <h1>Confirmação de Cadastro</h1>
+        <p>Olá ${nomeCompleto},</p>
+        <p>Por favor, confirme seu cadastro clicando no link abaixo:</p>
+        <a href="${verificationLink}">Confirmar Cadastro</a>
+      `);
+
+      res.render('auth/login_candidato', { message: 'Cadastro realizado! Por favor, verifique seu e-mail para confirmar.' });
+    } catch (error) {
+      console.error('Erro ao registrar candidato:', error);
+      res.status(500).render('auth/register_candidato', { errors: [{ msg: 'Erro ao registrar candidato.' }] });
+    }
+  }
+);
+
 
 // Verificar e-mail do candidato
-router.get('/verify-email-candidato', async (req, res) => {
+router.get('/verify', async (req, res) => {
   const { token } = req.query;
 
   try {
@@ -508,11 +479,11 @@ router.get('/verify-email-candidato', async (req, res) => {
     const candidato = await prisma.candidato.findUnique({ where: { email } });
 
     if (!candidato) {
-      return res.status(400).send('Candidato não encontrado.');
+      return res.status(404).send('Candidato não encontrado.');
     }
 
     if (candidato.emailVerificado) {
-      return res.render('auth/login_candidato', { message: 'E-mail já verificado.' });
+      return res.render('auth/verify_success', { message: 'E-mail já verificado. Você pode fazer login agora.' });
     }
 
     await prisma.candidato.update({
@@ -520,22 +491,107 @@ router.get('/verify-email-candidato', async (req, res) => {
       data: { emailVerificado: true, verificationToken: null },
     });
 
-    res.render('auth/login_candidato', { message: 'E-mail verificado com sucesso. Você já pode fazer login.' });
+    res.render('auth/verify_success', { message: 'E-mail verificado com sucesso! Você pode fazer login agora.' });
   } catch (error) {
     console.error(error);
     res.status(400).send('Token inválido ou expirado.');
   }
 });
 
+// Página de login do candidato
+router.get('/login_candidato', (req, res) => {
+  res.render('auth/login_candidato', { errors: [], message: null });
+});
 
+// Processar login do candidato
+router.post(
+  '/login_candidato',
+  [
+    body('email').isEmail().withMessage('E-mail inválido.'),
+    body('senha').isLength({ min: 6 }).trim().escape().withMessage('Senha inválida.'),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render('auth/login_candidato', { errors: errors.array(), message: null });
+    }
 
+    const { email, senha } = req.body;
 
+    try {
+      const candidato = await prisma.candidato.findUnique({ where: { email } });
 
+      if (!candidato) {
+        return res.status(400).render('auth/login_candidato', {
+          errors: [{ msg: 'E-mail ou senha incorretos.' }],
+          message: null,
+        });
+      }
 
+      if (!candidato.emailVerificado) {
+        return res.status(400).render('auth/login_candidato', {
+          errors: [{ msg: 'E-mail não verificado. Verifique sua caixa de entrada.' }],
+          message: null,
+        });
+      }
 
+      const senhaValida = await bcrypt.compare(senha, candidato.senha);
+      if (!senhaValida) {
+        return res.status(400).render('auth/login_candidato', {
+          errors: [{ msg: 'E-mail ou senha incorretos.' }],
+          message: null,
+        });
+      }
 
+      const token = jwt.sign({ userId: candidato.id, role: 'candidato' }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
+      res.cookie('token', token, {
+        httpOnly: true,
+        sameSite: 'Strict',
+        secure: process.env.NODE_ENV === 'production',
+      });
 
+      res.redirect('/candidato/dashboard');
+    } catch (error) {
+      console.error(error);
+      res.status(500).render('auth/login_candidato', { errors: [{ msg: 'Erro ao fazer login.' }], message: null });
+    }
+  }
+);
+// Verificar e-mail do candidato
+router.get('/verify_candidato', async (req, res) => {
+  try {
+    const { token } = req.query;
+
+    if (!token) {
+      return res.status(400).send('Token de verificação ausente.');
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const candidato = await prisma.candidato.findUnique({
+      where: { email: decoded.email },
+    });
+
+    if (!candidato) {
+      return res.status(404).send('Candidato não encontrado.');
+    }
+
+    if (candidato.emailVerificado) {
+      return res.redirect('/auth/login_candidato');
+    }
+
+    await prisma.candidato.update({
+      where: { email: decoded.email },
+      data: { emailVerificado: true, verificationToken: null },
+    });
+
+    res.redirect('/auth/login_candidato');
+  } catch (error) {
+    console.error('Erro ao verificar e-mail:', error);
+    res.status(400).send('Token de verificação inválido ou expirado.');
+  }
+});
 
 
 

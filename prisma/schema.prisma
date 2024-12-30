@@ -10,7 +10,7 @@ generator client {
 model Empresa {
   id             String   @id @default(uuid())
   razaoSocial    String
-  nomeFantasia   String
+  nomeFantasia   String?
   cnpj           String   @unique
   ie             String?
   cep            String
@@ -53,9 +53,14 @@ model Candidato {
   bairro         String
   cidade         String
   uf             String
-  curriculo      String
   candidaturas   Candidatura[]
   cursos         Curso[]
+  faixaSalarial String? // Opcional (se o campo pode ser nulo)
+  tipoContrato              String?  // Opcional
+  ocupacao                  String?  // Opcional
+  escolaridade              String?  // Opcional
+  disponibilidade           String?  // Opcional
+  idiomas                   String[] // Array para armazenar vários idiomas
   experienciasProfissionais ExperienciaProfissional[]
   avaliacoes     Avaliacao[] // Relacionamento com Avaliacao
   emailVerificado   Boolean  @default(false)
